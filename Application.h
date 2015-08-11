@@ -16,6 +16,7 @@
 #include <memory>
 #include <Windows.h>
 #include "Canvas.h"
+#include "ResourceFactory.h"
 
 #pragma endregion
 
@@ -47,15 +48,18 @@ namespace EUMD_FlightSimulator {
 
 			/* Functions */
 
-			static Application_sptr				createApplication(const HINSTANCE& hInstance,
-				const int w, const int h);
+			static Application_sptr				createApplication(const HINSTANCE& hInstance, 
+																  const int w, 
+																  const int h);
 			int									run();
 			void								kill();
 			static void							clean();
 
 			/* Implementations */
 
-			inline const std::string			getType() { return "Application"; }
+			inline const std::string			getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
+				return "Application"; 
+			}
 
 			/* Callbacks */
 
@@ -66,6 +70,7 @@ namespace EUMD_FlightSimulator {
 			/* Members */
 
 			static Application_sptr				sp_app;
+			ResourceFactory_sptr				mp_rscFactory;
 			Canvas_sptr							mp_canvas;
 			bool								mb_registered,
 												mb_kill;

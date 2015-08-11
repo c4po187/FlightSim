@@ -22,6 +22,7 @@ Application_sptr Application::sp_app = NULL;
 /* Ctor, Dtor */
 
 Application::Application() {
+	mp_rscFactory = ResourceFactory_sptr(new ResourceFactory());
 	m_stickyKeys = { sizeof(STICKYKEYS), 0 };
 	mb_kill = false;
 }
@@ -30,8 +31,7 @@ Application::~Application() { ; }
 
 /* Functions */
 
-Application_sptr Application::createApplication(const HINSTANCE& hInstance,
-												const int w, const int h) {
+Application_sptr Application::createApplication(const HINSTANCE& hInstance, const int w, const int h) {
 	if (!sp_app) {
 		sp_app = Application_sptr(new Application());
 

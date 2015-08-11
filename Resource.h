@@ -52,7 +52,9 @@ namespace EUMD_FlightSimulator {
 
 				/* Implementations */
 
-				inline virtual const std::string	getType() { return "Resource"; }
+				inline virtual const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
+					return "Resource"; 
+				}
 		};
 	}
 }

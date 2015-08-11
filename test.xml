@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Resources>
+  <Test>
+    <Number>69</Number>
+    <Textual>Hello, World</Textual>
+    <TextCompilation name="TC1">
+      <Textual>Barry</Textual>
+      <Textual>Nigel</Textual>
+      <Textual>Larry</Textual>
+      <Textual>Gordon</Textual>
+    </TextCompilation>
+  </Test>
+</Resources>
+
+<!-- END OF FILE -->

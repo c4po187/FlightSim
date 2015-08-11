@@ -25,6 +25,7 @@ using namespace boost::property_tree;
 namespace EUMD_FlightSimulator {
 
 	typedef ptree XMLTree;
+	typedef XMLTree::value_type XMLNode;
 
 	namespace Utilities {
 

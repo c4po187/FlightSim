@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <vector>
 #include "XMLParser.h"
+#include <boost\foreach.hpp>
 
 using namespace EUMD_FlightSimulator::Utilities;
 
@@ -24,6 +25,16 @@ using namespace EUMD_FlightSimulator::Utilities;
 #pragma region Declarations
 
 namespace EUMD_FlightSimulator {
+
+	///// Tests /////
+
+	typedef struct tagXMLTester {
+		unsigned int num;
+		std::string str;
+		std::vector<std::string> vstr;
+	} XMLTester, *PXMLTester;
+
+	/////////////////
 
 	namespace Resources {
 
@@ -44,6 +55,12 @@ namespace EUMD_FlightSimulator {
 
 				inline PResources			getResources() { return mv_pResources; }
 
+				///// Tests /////
+
+				inline PXMLTester			getXMLTester() { return &m_xmlTester; }
+
+				/////////////////
+
 				/* Functions */
 
 				void						addResource(Resource_sptr presource);
@@ -53,7 +70,9 @@ namespace EUMD_FlightSimulator {
 
 				/* Implementations */
 
-				inline const std::string	getType() { return "ResourceFactory"; }
+				inline const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
+					return "ResourceFactory"; 
+				}
 
 			private:
 
@@ -61,6 +80,13 @@ namespace EUMD_FlightSimulator {
 
 				PResources					mv_pResources;
 				unsigned int				m_idIterator;
+				XMLTree						m_currentXMLTree;
+
+				///// Tests /////
+
+				XMLTester					m_xmlTester;
+
+				/////////////////
 
 				/* Functions */
 

@@ -17,17 +17,28 @@
 
 #pragma endregion
 
+#pragma region Macros
+
+#define DEFAULT_TYPE_INFO  0
+#define EXTENDED_TYPE_INFO 1
+
+#pragma endregion
+
 #pragma region Declarations
 
 namespace EUMD_FlightSimulator {
+
+	typedef bool TypeInfo;
+
+	/* Application Object Interface */
 
 	class IApplicationObject {
 
 		public:
 
-			/* Functions */
+			/* Pure Virtual Functions */
 
-			virtual const std::string getType() = 0;
+			virtual const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) = 0;
 	};
 }
 

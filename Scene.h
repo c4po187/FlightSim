@@ -36,12 +36,6 @@ namespace EUMD_FlightSimulator {
 				Scene();
 				~Scene();
 
-				/* Accessors */
-
-				inline const std::string	getTypeExt() { 
-					return (Resource::getType() + "." + this->getType()); 
-				}
-
 				/* Functions */
 
 				void						update();
@@ -49,7 +43,9 @@ namespace EUMD_FlightSimulator {
 
 				/* Implementations */
 
-				inline const std::string	getType() override { return "Scene"; }
+				inline const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override { 
+					return (tInfo_ex) ? (Resource::getType() + "." + "Scene") : "Scene";
+				}
 
 			private:
 

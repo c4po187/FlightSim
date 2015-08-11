@@ -99,7 +99,7 @@ void Canvas::render() {
 	
 	///// Tests /////
 	std::cout << mp_scene->getType() << std::endl;
-	std::cout << mp_scene->getTypeExt() << std::endl;
+	std::cout << mp_scene->getType(EXTENDED_TYPE_INFO) << std::endl;
 	/////////////////
 
 	SwapBuffers(m_hDevCtx);
