@@ -32,6 +32,8 @@ void ResourceFactory::setupInitialResources() {
 	m_xmlTester = XMLTester();
 	XMLParser::readXMLFile("test.xml", m_currentXMLTree);
 
+	std::string attr = "";
+
 	if (!m_currentXMLTree.empty()) {
 		BOOST_FOREACH(XMLNode const& node, m_currentXMLTree.get_child("Resources.Test")) {
 			std::string label = node.first;
@@ -41,6 +43,8 @@ void ResourceFactory::setupInitialResources() {
 			else if (label == "Textual")
 				m_xmlTester.str = node.second.data();
 			else {
+				attr = node.second.get<std::string>("<xmlattr>.name");
+				
 				BOOST_FOREACH(XMLNode const& snode, node.second.get_child("")) {
 					std::string slabel = snode.first;
 
@@ -64,8 +68,14 @@ void ResourceFactory::addResource(Resource_sptr presource) {
 	mv_pResources.push_back(presource);
 }
 
-void ResourceFactory::removeResourceAt(const int& index) {
+bool ResourceFactory::removeResourceAt(const int& index) {
+	if (index < 0 || index >= mv_pResources.size()) 
+		return false;
+	
+	size_t pre = mv_pResources.size();
 	mv_pResources.erase(mv_pResources.begin() + index);
+
+	return (mv_pResources.size() < pre);
 }
 
 Resource_sptr ResourceFactory::findResource(const int& id) {
@@ -92,6 +102,14 @@ Resource_sptr ResourceFactory::findResource(const std::string& tag) {
 	}
 
 	return (pr) ? pr : nullptr;
+}
+
+void ResourceFactory::clean() {
+	if (!m_currentXMLTree.empty())
+		m_currentXMLTree.clear();
+
+	if (!mv_pResources.empty())
+		mv_pResources.clear();
 }
 
 #pragma endregion
