@@ -64,9 +64,10 @@ namespace EUMD_FlightSimulator {
 				/* Functions */
 
 				void						addResource(Resource_sptr presource);
-				void						removeResourceAt(const int& index);
+				bool						removeResourceAt(const int& index);
 				Resource_sptr				findResource(const int& id);
 				Resource_sptr				findResource(const std::string& tag);
+				void						clean();
 
 				/* Implementations */
 
