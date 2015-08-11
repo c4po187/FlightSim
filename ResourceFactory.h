@@ -18,7 +18,13 @@
 #include "XMLParser.h"
 #include <boost\foreach.hpp>
 
-using namespace EUMD_FlightSimulator::Utilities;
+///// Tests /////
+
+#include "Scene.h"
+
+/////////////////
+
+using namespace EUMD_FlightSimulator::Utilities; 
 
 #pragma endregion
 
@@ -54,6 +60,7 @@ namespace EUMD_FlightSimulator {
 				/* Accessors */
 
 				inline PResources			getResources() { return mv_pResources; }
+				inline unsigned int*		getResourceIDIterator_ptr() { return &m_idIterator; }
 
 				///// Tests /////
 

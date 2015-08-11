@@ -70,6 +70,7 @@
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceFactory.cpp" />
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
@@ -78,6 +79,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="IApplicationObject.h" />
     <ClInclude Include="Canvas.h" />
+    <ClInclude Include="LUT.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceFactory.h" />
     <ClInclude Include="Scene.h" />

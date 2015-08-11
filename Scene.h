@@ -32,7 +32,7 @@ namespace EUMD_FlightSimulator {
 
 				/* Ctor, Dtor */
 
-				Scene(const std::string& tag);
+				Scene(const std::string& tag, bool active = true);
 				Scene();
 				~Scene();
 

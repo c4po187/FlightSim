@@ -19,7 +19,12 @@ using namespace EUMD_FlightSimulator::Resources;
 
 ResourceFactory::ResourceFactory() : m_idIterator(0) { setupInitialResources(); }
 
-ResourceFactory::~ResourceFactory() { ; }
+ResourceFactory::~ResourceFactory() {
+	clean();
+#if _DEBUG
+	DST_NOTIFY;
+#endif
+}
 
 /* Functions */
 
@@ -55,7 +60,16 @@ void ResourceFactory::setupInitialResources() {
 		}
 	}
 
-	////////////////////////// > SUCCESS!
+	//////////////////////////
+
+	///// Factory Test /////
+
+	addResource(Scene_sptr(new Scene("Mutherfucker")));
+	addResource(Scene_sptr(new Scene("Bitches")));
+	addResource(Scene_sptr(new Scene("Be")));
+	addResource(Scene_sptr(new Scene("Trippin")));
+
+	////////////////////////
 }
 
 void ResourceFactory::setResourceId(Resource_sptr pResource) {
@@ -79,29 +93,23 @@ bool ResourceFactory::removeResourceAt(const int& index) {
 }
 
 Resource_sptr ResourceFactory::findResource(const int& id) {
-	Resource_sptr pr;
+	static int _id = id;
 
-	for (auto pRes : mv_pResources) {
-		if (pRes->getID() == id) {
-			pr = pRes;
-			break;
-		}
-	}
-
-	return (pr) ? pr : nullptr;
+	PResources::iterator prit = std::find_if(
+		mv_pResources.begin(), mv_pResources.end(), 
+		[](Resource_sptr pr)-> bool { return pr->getID() == _id; });
+	
+	return (*prit);
 }
 
 Resource_sptr ResourceFactory::findResource(const std::string& tag) {
-	Resource_sptr pr;
+	static std::string _tag = tag;
 
-	for (auto pRes : mv_pResources) {
-		if (pRes->getTag() == tag) {
-			pr = pRes;
-			break;
-		}
-	}
+	PResources::iterator prit = std::find_if(
+		mv_pResources.begin(), mv_pResources.end(),
+		[](Resource_sptr pr)-> bool { return pr->getTag() == _tag; });
 
-	return (pr) ? pr : nullptr;
+	return (*prit);
 }
 
 void ResourceFactory::clean() {

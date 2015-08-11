@@ -33,6 +33,10 @@ namespace EUMD_FlightSimulator {
 
 			public:
 
+				/* Dtor */
+
+				virtual ~Component();
+
 				/* Accessors */
 
 				inline const std::string&			getTag() const { return m_tag; }

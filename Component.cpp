@@ -15,6 +15,15 @@ using namespace EUMD_FlightSimulator::Components;
 
 #pragma region Definitions
 
+/* Dtor */
+
+Component::~Component() {
+	clean();
+#if _DEBUG
+	DST_NOTIFY;
+#endif
+}
+
 /* Functions */
 
 void Component::addComponent(Component_sptr pComponent) {

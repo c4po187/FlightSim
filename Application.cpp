@@ -27,7 +27,12 @@ Application::Application() {
 	mb_kill = false;
 }
 
-Application::~Application() { ; }
+Application::~Application() { 
+	clean();
+#if _DEBUG
+	DST_NOTIFY;
+#endif
+}
 
 /* Functions */
 
@@ -99,9 +104,13 @@ int Application::run() {
 		}
 
 		mp_canvas->render();
+
+		///// Find Test /////
+
+		Resource r_ft = (*mp_rscFactory->findResource("Be"));
+
+		/////////////////////
 	}
-	
-	clean();
 
 	return static_cast<int>(msg.wParam);
 }

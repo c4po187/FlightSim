@@ -25,7 +25,12 @@ Canvas::Canvas(const HINSTANCE& hInstance,
 
 Canvas::Canvas() { ; }
 
-Canvas::~Canvas() { ; }
+Canvas::~Canvas() {
+	clean();
+#if _DEBUG
+	DST_NOTIFY;
+#endif
+}
 
 /* Functions */
 
@@ -103,6 +108,16 @@ void Canvas::render() {
 	/////////////////
 
 	SwapBuffers(m_hDevCtx);
+}
+
+void Canvas::clean() {
+	if (m_hglCtx) {
+		wglMakeCurrent(NULL, NULL);
+		wglDeleteContext(m_hglCtx);
+		m_hglCtx = NULL;
+	}
+
+	ReleaseDC(m_hwnd, m_hDevCtx);
 }
 
 #pragma endregion

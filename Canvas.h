@@ -52,6 +52,7 @@ namespace EUMD_FlightSimulator {
 			/* Implementations */
 
 			inline const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { return "Canvas"; }
+			void						clean();
 
 		private:
 

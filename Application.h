@@ -37,7 +37,7 @@ namespace EUMD_FlightSimulator {
 			/* Ctor, Dtor */
 
 			Application();
-			virtual ~Application();
+			~Application();
 
 			/* Accessors */
 
@@ -53,7 +53,7 @@ namespace EUMD_FlightSimulator {
 																  const int h);
 			int									run();
 			void								kill();
-			static void							clean();
+			void								clean();
 
 			/* Implementations */
 

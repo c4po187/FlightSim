@@ -16,6 +16,7 @@
 #include <memory>
 #include <vector>
 #include "Component.h"
+#include "LUT.h"
 
 using namespace EUMD_FlightSimulator::Components;
 
@@ -36,10 +37,15 @@ namespace EUMD_FlightSimulator {
 
 			public:
 
+				/* Dtor */
+
+				virtual ~Resource();
+
 				/* Accessors */
 
 				inline const unsigned int&					getID() const { return m_id; }
 				inline const std::string&					getTag() const { return m_tag; }
+				inline const bool&							isActive() const { return mb_active; }
 				inline const PResources&					getChildren() const { return mv_pChildResources; }
 				inline const PComponents&					getComponents() const { return mv_pComponents; }
 
@@ -47,11 +53,15 @@ namespace EUMD_FlightSimulator {
 
 				inline void									setID(const int& id) { m_id = id; }
 				inline void									setTag(const std::string& tag) { m_tag = tag; }
+				inline void									setActive(const bool& active) { mb_active = active; }
 
 				/* Functions */
 
-				template <class _Tcomponent>
-				inline std::tr1::shared_ptr<_Tcomponent>	getComponent() { return nullptr; }
+				void										addResource(Resource_sptr presource);
+				void										addComponent(Component_sptr pcomponent);
+				template <class _TyComponent>
+				std::tr1::shared_ptr<_TyComponent>			getComponent();
+				virtual void								clean();
 
 				/* Implementations */
 
@@ -63,8 +73,9 @@ namespace EUMD_FlightSimulator {
 
 				/* Members */
 
-				unsigned int								m_id;
+				unsigned int								m_id;		// To be set by the Factory only
 				std::string									m_tag;
+				bool										mb_active;
 				PResources									mv_pChildResources;
 				PComponents									mv_pComponents;
 		};
