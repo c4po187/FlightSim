@@ -25,6 +25,12 @@ Resource::~Resource() {
 #endif
 }
 
+/* Operator Overloads */
+
+bool Resource::operator == (const Resource& resource) {
+	return (this->getID() == resource.getID());
+}
+
 /* Functions */
 
 void Resource::addResource(Resource_sptr presource) {
@@ -36,9 +42,32 @@ void Resource::addComponent(Component_sptr pcomponent) {
 }
 
 template <class _TyComponent>
-std::tr1::shared_ptr<_TyComponent> getComponent() {
-	// @TODO
-	return nullptr;
+std::tr1::shared_ptr<_TyComponent> Resource::getComponent() {
+	bool validType = false;
+	
+	// First check if the type of component is valid
+	for (unsigned i = 0; i < SZ_SUBCOMPONENTS; ++i) {
+		if (Config::SubComponents[i].c_str() == typeid(_TyComponent).name()) {
+			validType = true;
+			break;
+		}
+	}
+	
+	if (!validType)
+		throw std::exception("ERROR: Invalid Component type.");
+
+	Component_sptr component = NULL;
+
+	// Now check if the component exists in the vector
+	for (auto c : mv_pComponents) {
+		if (typeid(_TyComponent).name() == c->getType().c_str()) {
+			component = c;
+			break;
+		}
+	}
+
+	// Return if found
+	return (component) ? dynamic_cast<std::tr1::shared_ptr<_TyComponent>>(component) : nullptr;
 }
 
 void Resource::clean() {

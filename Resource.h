@@ -17,6 +17,8 @@
 #include <vector>
 #include "Component.h"
 #include "LUT.h"
+#include <typeinfo>
+#include <exception>
 
 using namespace EUMD_FlightSimulator::Components;
 
@@ -40,6 +42,10 @@ namespace EUMD_FlightSimulator {
 				/* Dtor */
 
 				virtual ~Resource();
+
+				/* Operators */
+
+				bool operator == (const Resource& resource);
 
 				/* Accessors */
 
