@@ -17,11 +17,25 @@ using namespace EUMD_FlightSimulator::Core;
 
 /* Ctor, Dtor */
 
-Canvas::Canvas(const HINSTANCE& hInstance, 
-			   const int& width, 
-			   const int& height) :
-					m_width(width),
-					m_height(height) { init(hInstance); }
+Canvas::Canvas(const HINSTANCE& hInstance, const int width, const int height,
+	U16 layoutFlags, Viewport_sptr pviewport) :
+	m_width(width), m_height(height), m_layoutFlag(layoutFlags) {
+	if (pviewport)
+		addViewport(pviewport);
+	initialize(hInstance);
+}
+
+Canvas::Canvas(const HINSTANCE& hInstance, const int width, const int height,
+	U16 layoutFlags, PViewports viewports) :
+	m_width(width), m_height(height), m_layoutFlag(layoutFlags), mv_pViewports(viewports) {
+	initialize(hInstance);
+}
+
+Canvas::Canvas(const HINSTANCE& hInstance, const int width, const int height) :
+	m_width(width), m_height(height) { 
+	m_layoutFlag = (VP_SINGLE | VP_FITCANVAS);
+	initialize(hInstance); 
+}
 
 Canvas::Canvas() { ; }
 
@@ -34,11 +48,7 @@ Canvas::~Canvas() {
 
 /* Functions */
 
-void Canvas::init(const HINSTANCE& hInstance) {
-	///// Tests /////
-	mp_scene = Scene_sptr(new Scene("Intro"));
-	/////////////////
-
+void Canvas::initialize(const HINSTANCE& hInstance) {
 	m_hwnd = CreateWindowEx(
 		WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, 
 		"Flight Simulator", 
@@ -56,10 +66,12 @@ void Canvas::init(const HINSTANCE& hInstance) {
 	m_hDevCtx = GetDC(m_hwnd);
 	m_hglCtx = createglContext();
 
-	glClearColor(.0f, .0f, .0f, 1.0f);
+	/*glClearColor(.0f, .0f, .0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	glCullFace(GL_BACK);*/
+
+	setupPresetLayout();
 
 	ShowWindow(m_hwnd, SW_SHOW);
 }
@@ -95,19 +107,203 @@ HGLRC Canvas::createglContext() {
 	return hglrc;
 }
 
+void Canvas::addViewport(Viewport_sptr pviewport) {
+	mv_pViewports.push_back(pviewport);
+}
+
+bool Canvas::removeViewport(const std::string& tag) {
+	static std::string _tag = tag;
+
+	PViewports::iterator vit = std::find_if(
+		mv_pViewports.begin(), mv_pViewports.end(),
+		[](Viewport_sptr v)-> bool { return v->getTag() == _tag; });
+
+	if (*vit) {
+		int index = std::distance(mv_pViewports.begin(), vit);
+
+		return removeViewportAt(index);
+	}
+
+	return false;
+}
+
+bool Canvas::removeViewportAt(const int& index) {
+	if (index < 0 || index >= mv_pViewports.size())
+		throw EX_IOR;
+
+	size_t pre = mv_pViewports.size();
+	mv_pViewports.erase(mv_pViewports.begin() + index);
+
+	return (mv_pViewports.size() < pre);
+}
+
 void Canvas::resize(int w, int h) {
+	/**
+	 * @TODO:
+	 *		Calculate this canvas size based on all
+	 *		viewports.
+	 *		Update and resize all viewports.
+	 */
 	glViewport(0, 0, w, h);
+
+	/*if (!mv_pViewports.empty()) {
+		for (auto v : mv_pViewports) {
+			///int hw = (w / 2);
+			int hh = (h / 2);
+
+			v->resize(w, hh);
+		}
+	}*/
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0, static_cast<GLdouble>(m_width / m_height), .1, 100.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 void Canvas::render() {
+
+	/*if (mv_pViewports.size() > 0) {
+		for (auto v : mv_pViewports) {
+			v->update();
+			v->render();
+		}
+	}*/
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glClearDepth(1.0f);
+
+	glClearColor(.0f, .0f, .0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	///// Tests /////
-	std::cout << mp_scene->getType() << std::endl;
-	std::cout << mp_scene->getType(EXTENDED_TYPE_INFO) << std::endl;
-	/////////////////
+
+	glColor3f(.0f, .0f, 1.0f);
+	glRectf(-.5f, .5f, .5f, -.5f);
 
 	SwapBuffers(m_hDevCtx);
+}
+
+void Canvas::setupPresetLayout() {
+	// First check if the flag is zero
+	if (m_layoutFlag == 0) {
+		// No flags are set, so check if there is are viewports available
+		if (mv_pViewports.size() == 0) {
+			/**
+			 * No viewports...
+			 * Let's set the presets and create a single viewport.
+			 */
+			m_layoutFlag = (VP_SINGLE | VP_FITCANVAS);
+			addViewport(Viewport_sptr(new Viewport(0, 0, m_width, m_height)));
+
+			return;
+		}
+
+		else {
+			m_layoutFlag = VP_CUSTOM_LAYOUT;
+
+			if (mv_pViewports.size() == 1)
+				m_layoutFlag |= VP_SINGLE;
+
+			return;
+		}
+
+	} else {
+		// Flag is set to a value, again check if we've any viewports
+		if (mv_pViewports.size() == 0) {
+			// As no viewports have been provided, we will make all presets fit canvas
+			if (!(m_layoutFlag & VP_FITCANVAS))
+				m_layoutFlag |= VP_FITCANVAS;
+
+			/* Viewport layout settings */
+			{
+				int hw = (m_width / 2);
+				int hh = (m_height / 2);
+
+				// Singular
+				if (m_layoutFlag & VP_SINGLE) {
+					addViewport(Viewport_sptr(new Viewport(0, 0, m_width, m_height)));
+
+					///// Test /////
+
+					mv_pViewports[0]->setClearColor(Vec4(.0f, .0f, 1.0f, 1.0f));
+
+					////////////////
+				}
+
+				// Horizontal 2P Splitscreen
+				else if (m_layoutFlag & VP_SPLITSCREEN_2H) {
+					addViewport(Viewport_sptr(new Viewport(0, hh, m_width, hh)));
+					addViewport(Viewport_sptr(new Viewport(0, 0, m_width, hh)));
+
+					mv_pViewports[0]->setTag("Top");
+					mv_pViewports[1]->setTag("Bottom");
+
+					mv_pViewports[0]->setClearColor(Vec4(1.0f, .0f, .0f, 1.0f));
+					mv_pViewports[1]->setClearColor(Vec4(.0f, 1.0f, .0f, 1.0f));
+				}
+
+				// Vertical 2P Splitscreen
+				else if (m_layoutFlag & VP_SPLITSCREEN_2V) {
+					addViewport(Viewport_sptr(new Viewport(0, 0, hw, m_height)));
+					addViewport(Viewport_sptr(new Viewport(hw, 0, hw, m_height)));
+
+					mv_pViewports[0]->setTag("Left");
+					mv_pViewports[1]->setTag("Right");
+
+					mv_pViewports[0]->setClearColor(Vec4(1.0f, .0f, .0f, 1.0f));
+					mv_pViewports[1]->setClearColor(Vec4(.0f, 1.0f, .0f, 1.0f));
+				}
+
+				// 3P Splitscreen (Top heavy)
+				else if (m_layoutFlag & VP_SPLITSCREEN_3) {
+					addViewport(Viewport_sptr(new Viewport(0, 0, m_width, hh)));
+					addViewport(Viewport_sptr(new Viewport(0, hh, hw, hh)));
+					addViewport(Viewport_sptr(new Viewport(hw, hh, hw, hh)));
+
+					mv_pViewports[0]->setTag("Top");
+					mv_pViewports[1]->setTag("BottomLeft");
+					mv_pViewports[2]->setTag("BottomRight");
+
+					mv_pViewports[0]->setClearColor(Vec4(1.0f, .0f, .0f, 1.0f));
+					mv_pViewports[1]->setClearColor(Vec4(.0f, 1.0f, .0f, 1.0f));
+					mv_pViewports[2]->setClearColor(Vec4(.0f, .0f, 1.0f, 1.0f));
+				}
+
+				// 4P Splitscreen
+				else if (m_layoutFlag & VP_SPLITSCREEN_4) {
+					addViewport(Viewport_sptr(new Viewport(0, 0, hw, hh)));
+					addViewport(Viewport_sptr(new Viewport(hw, 0, hw, hh)));
+					addViewport(Viewport_sptr(new Viewport(0, hh, hw, hh)));
+					addViewport(Viewport_sptr(new Viewport(hw, hh, hw, hh)));
+
+					mv_pViewports[0]->setTag("TopLeft");
+					mv_pViewports[1]->setTag("TopRight");
+					mv_pViewports[2]->setTag("BottomLeft");
+					mv_pViewports[3]->setTag("BottomRight");
+
+					mv_pViewports[0]->setClearColor(Vec4(1.0f, .0f, .0f, 1.0f));
+					mv_pViewports[1]->setClearColor(Vec4(.0f, 1.0f, .0f, 1.0f));
+					mv_pViewports[2]->setClearColor(Vec4(.0f, .0f, 1.0f, 1.0f));
+					mv_pViewports[3]->setClearColor(Vec4(.0f, 1.0f, 1.0f, 1.0f));
+				}
+
+				else
+					return;
+			}
+
+			// Set borders as specified
+			if (mv_pViewports.size() > 0) {
+				if (m_layoutFlag & VP_BORDER) {
+					for (auto v : mv_pViewports)
+						v->setBorder(true);
+				}
+			}
+
+			return;
+		}
+	}
 }
 
 void Canvas::clean() {

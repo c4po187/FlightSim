@@ -18,7 +18,6 @@
 #include "Component.h"
 #include "LUT.h"
 #include <typeinfo>
-#include <exception>
 
 using namespace EUMD_FlightSimulator::Components;
 
@@ -67,13 +66,13 @@ namespace EUMD_FlightSimulator {
 				void										addComponent(Component_sptr pcomponent);
 				template <class _TyComponent>
 				std::tr1::shared_ptr<_TyComponent>			getComponent();
-				virtual void								clean();
 
 				/* Implementations */
 
 				inline virtual const std::string			getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
 					return "Resource"; 
 				}
+				virtual void								clean();
 
 			protected:
 

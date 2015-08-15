@@ -14,6 +14,8 @@
 
 #include <iostream>
 #include <string>
+#include "EUMD_Exceptions.h"
+#include "Defines.h"
 
 #pragma endregion
 
@@ -21,10 +23,12 @@
 
 namespace EUMD_FlightSimulator {
 
-#pragma region Macros
+	/* Macros */
 
-	#define DEFAULT_TYPE_INFO	0
-	#define EXTENDED_TYPE_INFO	1
+	#define DEFAULT_TYPE_INFO			0
+	#define EXTENDED_TYPE_INFO			1
+	#define DST							"Destroying: "
+	#define DST_NOTIFY					std::cout << DST << getType() << std::endl
 
 	typedef bool TypeInfo;
 
@@ -39,10 +43,6 @@ namespace EUMD_FlightSimulator {
 			virtual const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) = 0;
 			virtual void				clean() = 0;
 	};
-
-	#define DST					"\n###############################\nDestroying: "
-	#define DST_NOTIFY			std::cout << DST << getType() << \
-								"\n###############################\n" << std::endl
 }
 
 #pragma endregion

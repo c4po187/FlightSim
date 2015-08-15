@@ -54,7 +54,7 @@ std::tr1::shared_ptr<_TyComponent> Resource::getComponent() {
 	}
 	
 	if (!validType)
-		throw std::exception("ERROR: Invalid Component type.");
+		throw EX_INV_COMP_TYPE;
 
 	Component_sptr component = NULL;
 
@@ -67,7 +67,7 @@ std::tr1::shared_ptr<_TyComponent> Resource::getComponent() {
 	}
 
 	// Return if found
-	return (component) ? dynamic_cast<std::tr1::shared_ptr<_TyComponent>>(component) : nullptr;
+	return (component) ? dynamic_cast<std::tr1::shared_ptr<_TyComponent>>(component) : nullptr; 
 }
 
 void Resource::clean() {

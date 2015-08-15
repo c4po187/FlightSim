@@ -13,6 +13,7 @@
 #pragma region Prerequisites
 
 #include "Resource.h"
+#include "Entity.h"
 
 #pragma endregion
 
@@ -51,12 +52,7 @@ namespace EUMD_FlightSimulator {
 
 				/* Members */
 
-				/** 
-				 * @TODO:
-				 *
-				 * We will need a vector of GameObject pointers here 
-				 * linking to ones previously provided by the ResourceFactory.
-				 */
+				PEntities					mv_pEntities;
 		};
 	}
 }

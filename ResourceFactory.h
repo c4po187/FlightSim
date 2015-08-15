@@ -48,7 +48,7 @@ namespace EUMD_FlightSimulator {
 
 		typedef std::tr1::shared_ptr<ResourceFactory> ResourceFactory_sptr;
 
-		class ResourceFactory : public IApplicationObject {
+		class ResourceFactory final : public IApplicationObject {
 
 			public:
 

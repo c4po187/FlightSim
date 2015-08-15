@@ -18,6 +18,8 @@
 #pragma region Libs
 
 #pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "glu32.lib")
+#pragma comment(lib, "user32.lib")
 
 #pragma endregion
 

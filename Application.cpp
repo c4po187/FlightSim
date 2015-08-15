@@ -48,8 +48,10 @@ Application_sptr Application::createApplication(const HINSTANCE& hInstance, cons
 				SPI_SETSTICKYKEYS, sizeof(STICKYKEYS), static_cast<LPVOID>(sp_app->getStickyKeys_ptr()), 0);
 		}
 
-		if (sp_app->mb_registered = sp_app->registerWindowClass(hInstance))
-			sp_app->mp_canvas = Canvas_sptr(new Canvas(hInstance, w, h));
+		if (sp_app->mb_registered = sp_app->registerWindowClass(hInstance)) {
+			sp_app->mp_canvas = Canvas_sptr(
+				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_2H | VP_FITCANVAS), NULL));
+		}
 	}
 
 	return sp_app;
@@ -104,12 +106,6 @@ int Application::run() {
 		}
 
 		mp_canvas->render();
-
-		///// Find Test /////
-
-		Resource r_ft = (*mp_rscFactory->findResource("Be"));
-
-		/////////////////////
 	}
 
 	return static_cast<int>(msg.wParam);

@@ -82,9 +82,10 @@ void ResourceFactory::addResource(Resource_sptr presource) {
 	mv_pResources.push_back(presource);
 }
 
+// Returns true if there is one less Resource in vector than before
 bool ResourceFactory::removeResourceAt(const int& index) {
-	if (index < 0 || index >= mv_pResources.size()) 
-		return false;
+	if (index < 0 || index >= mv_pResources.size())
+		throw EX_IOR;
 	
 	size_t pre = mv_pResources.size();
 	mv_pResources.erase(mv_pResources.begin() + index);
