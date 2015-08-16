@@ -50,7 +50,7 @@ Application_sptr Application::createApplication(const HINSTANCE& hInstance, cons
 
 		if (sp_app->mb_registered = sp_app->registerWindowClass(hInstance)) {
 			sp_app->mp_canvas = Canvas_sptr(
-				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_2H | VP_FITCANVAS), NULL));
+				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_4 | VP_FITCANVAS), NULL));
 		}
 	}
 
@@ -78,6 +78,20 @@ bool Application::registerWindowClass(const HINSTANCE& hInstance) {
 
 LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	switch (msg) {
+
+#if _DEBUG
+		case WM_KEYDOWN:
+			switch (wparam) {
+				case VK_ESCAPE:
+					sp_app->clean();
+					PostQuitMessage(0);
+					break;
+				default:
+					break;
+			}
+			break;
+#endif
+
 		case WM_SIZE:
 			sp_app->getCanvas()->resize(LOWORD(lparam), HIWORD(lparam));
 			break;

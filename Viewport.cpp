@@ -44,17 +44,9 @@ void Viewport::initialize() {
 	// Default 1px white border, in case it gets set
 	m_borderColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_borderThickness = 1.0f;
-
-	glEnable(GL_SCISSOR_TEST);
-	glEnable(GL_DEPTH_TEST);
 }
 
 void Viewport::resize(const int& w, const int& h) {
-	if (m_y != 0)
-		m_y = h;
-
-	m_width = w;
-	m_height = h;
 }
 
 void Viewport::update() {
@@ -64,21 +56,18 @@ void Viewport::update() {
 
 void Viewport::render() {
 	if (mb_visible) {
-		
-		glScissor(m_x, m_y, m_width, m_height);
 
-		glClearDepth(1.0);
-		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(45.0, ((GLfloat)m_width / (GLfloat)m_height), .1, 500.0);
+		glViewport(m_x, m_y, m_width, m_height);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		mp_scene->render();
+		glColor3f(1.0f, 1.0f, .0f);
+		glRectf(-.5f, .5f, .5f, -.5f);
+
+		if (mp_scene)
+			mp_scene->render();
+
 	}
 }
 

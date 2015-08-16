@@ -66,6 +66,7 @@ namespace EUMD_FlightSimulator {
 			/* Accessors */
 
 			inline const U16&				getLayoutFlag() const { return m_layoutFlag; }
+			inline const bool&				hasViewports() const { return !mv_pViewports.empty(); }
 
 			/* Modifiers */
 
