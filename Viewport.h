@@ -105,6 +105,12 @@ namespace EUMD_FlightSimulator {
 													mb_visible,
 													mb_border;
 
+					///// Tests /////
+
+					float							m_rotZ;
+
+					/////////////////
+
 					/* Functions */
 
 					void							initialize();

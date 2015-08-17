@@ -50,7 +50,7 @@ Application_sptr Application::createApplication(const HINSTANCE& hInstance, cons
 
 		if (sp_app->mb_registered = sp_app->registerWindowClass(hInstance)) {
 			sp_app->mp_canvas = Canvas_sptr(
-				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_4 | VP_FITCANVAS), NULL));
+				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_3V | VP_FITCANVAS), NULL));
 		}
 	}
 
@@ -73,7 +73,11 @@ bool Application::registerWindowClass(const HINSTANCE& hInstance) {
 	winClass.lpszClassName = "Flight Simulator";
 	winClass.lpszMenuName = NULL;
 
-	return RegisterClassEx(&winClass);
+	if (RegisterClassEx(&winClass) == 0) {
+		throw EX_GENERAL;
+	}
+
+	return true;
 }
 
 LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
@@ -91,7 +95,11 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 			}
 			break;
 #endif
-
+		case WM_PAINT:
+			sp_app->getCanvas()->render();
+			break;
+		case WM_ERASEBKGND:
+			return 0;
 		case WM_SIZE:
 			sp_app->getCanvas()->resize(LOWORD(lparam), HIWORD(lparam));
 			break;
@@ -118,8 +126,6 @@ int Application::run() {
 				DispatchMessage(&msg);
 			}
 		}
-
-		mp_canvas->render();
 	}
 
 	return static_cast<int>(msg.wParam);

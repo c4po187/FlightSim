@@ -68,12 +68,14 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 
 	setupPresetLayout();
 
-	glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LEQUAL);
-	glClearDepth(1.0f);
-	glClearColor(.0f, .0f, .0f, .0f);
+	ShowWindow(m_hwnd, SW_NORMAL);
 
-	ShowWindow(m_hwnd, SW_SHOW);
+	glClearColor(.0f, .0f, .0f, 1.0f);
+	glClearDepth(1.0);
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
+
+	resize(m_width, m_height);
 }
 
 HGLRC Canvas::createglContext() {
@@ -138,24 +140,50 @@ bool Canvas::removeViewportAt(const int& index) {
 }
 
 void Canvas::resize(int w, int h) {
-	/**
-	 * @TODO:
-	 *		Calculate this canvas size based on all
-	 *		viewports.
-	 *		Update and resize all viewports.
-	 */
+	// Get 1% of the current width and height before we resize
+	double percWidth = (static_cast<double>(m_width) / 100.0);
+	double percHeight = (static_cast<double>(m_height) / 100.0);
 
+	// Store the new width & height
 	m_width = w;
 	m_height = h;
 
-	glViewport(0, 0, w, h);
+	GLdouble aspect = static_cast<GLdouble>(m_width) / static_cast<GLdouble>(m_height);
 
+	// Resize base viewport
+	glViewport(0, 0, static_cast<GLsizei>(m_width), static_cast<GLsizei>(m_height));
+
+	// Set the perspective matrix accordingly
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, static_cast<GLdouble>(m_width / m_height), .1, 500.0);
+	gluPerspective(45.0, aspect, .1, 500.0);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	/**
+	 * Create width & height scalars that reflect the percentage change
+	 * that occured during the resize.
+	 * These scalars will be used to adjust the dimensions of all the
+	 * sub-viewports.
+	 */
+	double widthScalar = ((static_cast<double>(m_width) / percWidth) / 100.0);
+	double heightScalar = ((static_cast<double>(m_height) / percHeight) / 100.0);
+
+	// Adjust all viewports
+	if (hasViewports()) {
+		for (auto v : mv_pViewports) {
+			
+			// Set the dimensions
+			v->setWidth(round32((static_cast<double>(v->getWidth()) * widthScalar)));
+			v->setHeight(round32((static_cast<double>(v->getHeight()) * heightScalar)));
+
+			// Set the X & Y positions if fit to canvas flag is on
+			if (m_layoutFlag & VP_FITCANVAS) {
+				if (v->getX() != 0) 
+					v->setX(v->getWidth());
+				if (v->getY() != 0)
+					v->setY(v->getHeight());
+			}
+		}
+	}
 }
 
 void Canvas::render() {
@@ -230,13 +258,24 @@ void Canvas::setupPresetLayout() {
 				}
 
 				// 3P Splitscreen (Top heavy)
-				else if (m_layoutFlag & VP_SPLITSCREEN_3) {
+				else if (m_layoutFlag & VP_SPLITSCREEN_3H) {
 					addViewport(Viewport_sptr(new Viewport(0, hh, m_width, hh)));
 					addViewport(Viewport_sptr(new Viewport(0, 0, hw, hh)));
 					addViewport(Viewport_sptr(new Viewport(hw, 0, hw, hh)));
 
 					mv_pViewports[0]->setTag("Top");
 					mv_pViewports[1]->setTag("BottomLeft");
+					mv_pViewports[2]->setTag("BottomRight");
+				}
+
+				// 3P Splitscreen (Left side heavy)
+				else if (m_layoutFlag & VP_SPLITSCREEN_3V) {
+					addViewport(Viewport_sptr(new Viewport(0, 0, hw, m_height)));
+					addViewport(Viewport_sptr(new Viewport(hw, hh, hw, hh)));
+					addViewport(Viewport_sptr(new Viewport(hw, 0, hw, hh)));
+
+					mv_pViewports[0]->setTag("Left");
+					mv_pViewports[1]->setTag("TopRight");
 					mv_pViewports[2]->setTag("BottomRight");
 				}
 

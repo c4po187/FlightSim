@@ -87,6 +87,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EUMD_Exceptions.h" />
+    <ClInclude Include="EUMD_Math.h" />
     <ClInclude Include="IApplicationObject.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="LUT.h" />

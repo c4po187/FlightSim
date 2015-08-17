@@ -12,12 +12,15 @@
 
 #pragma region Prerequisites
 
+#include "EUMD_Math.h"
 #include <algorithm>
 #include <memory>
 #include <vector>
 #include <Windows.h>
 #include "IApplicationObject.h"
 #include "Viewport.h"
+
+using namespace EUMD_FlightSimulator::Utilities;
 
 #pragma endregion
 
@@ -35,11 +38,12 @@ namespace EUMD_FlightSimulator {
 			VP_SINGLE			= VP_BGN,
 			VP_SPLITSCREEN_2H	= VP_BGN << 1,
 			VP_SPLITSCREEN_2V	= VP_BGN << 2,
-			VP_SPLITSCREEN_3	= VP_BGN << 3,
-			VP_SPLITSCREEN_4	= VP_BGN << 4,
-			VP_CUSTOM_LAYOUT	= VP_BGN << 5,
-			VP_FITCANVAS		= VP_BGN << 6,
-			VP_BORDER			= VP_BGN << 7
+			VP_SPLITSCREEN_3H	= VP_BGN << 3,
+			VP_SPLITSCREEN_3V	= VP_BGN << 4,
+			VP_SPLITSCREEN_4	= VP_BGN << 5,
+			VP_CUSTOM_LAYOUT	= VP_BGN << 6,
+			VP_FITCANVAS		= VP_BGN << 7,
+			VP_BORDER			= VP_BGN << 8
 		};
 
 		using namespace Graphics;
@@ -65,6 +69,9 @@ namespace EUMD_FlightSimulator {
 
 			/* Accessors */
 
+			inline const HDC&				getDeviceContext() const { return m_hDevCtx; }
+			inline const HGLRC&				getGLContext() const { return m_hglCtx; }
+			inline const HWND&				getWindowHandle() const { return m_hwnd; }
 			inline const U16&				getLayoutFlag() const { return m_layoutFlag; }
 			inline const bool&				hasViewports() const { return !mv_pViewports.empty(); }
 

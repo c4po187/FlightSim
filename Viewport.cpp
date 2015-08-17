@@ -44,6 +44,8 @@ void Viewport::initialize() {
 	// Default 1px white border, in case it gets set
 	m_borderColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_borderThickness = 1.0f;
+
+	m_rotZ = .0f;
 }
 
 void Viewport::resize(const int& w, const int& h) {
@@ -52,6 +54,8 @@ void Viewport::resize(const int& w, const int& h) {
 void Viewport::update() {
 	if (mp_scene && mb_active)
 		mp_scene->update();
+
+	m_rotZ += .05f;
 }
 
 void Viewport::render() {
@@ -61,6 +65,9 @@ void Viewport::render() {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+
+		glTranslatef(.0f, .0f, -2.5f);
+		glRotatef(m_rotZ, .0f, .0f, 1.0f);
 
 		glColor3f(1.0f, 1.0f, .0f);
 		glRectf(-.5f, .5f, .5f, -.5f);
