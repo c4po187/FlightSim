@@ -18,16 +18,20 @@ using namespace EUMD_FlightSimulator::Core;
 /* Ctor, Dtor */
 
 Canvas::Canvas(const HINSTANCE& hInstance, const int width, const int height,
-	U16 layoutFlags, Viewport_sptr pviewport) :
+	U16 layoutFlags, Viewport_sptr pviewport, bool useSceneManager) :
 	m_width(width), m_height(height), m_layoutFlag(layoutFlags) {
 	if (pviewport)
 		addViewport(pviewport);
+	if (useSceneManager)
+		mp_sceneManager = SceneManager_sptr(new SceneManager());
 	initialize(hInstance);
 }
 
 Canvas::Canvas(const HINSTANCE& hInstance, const int width, const int height,
-	U16 layoutFlags, PViewports viewports) :
+	U16 layoutFlags, PViewports viewports, bool useSceneManager) :
 	m_width(width), m_height(height), m_layoutFlag(layoutFlags), mv_pViewports(viewports) {
+	if (useSceneManager)
+		mp_sceneManager = SceneManager_sptr(new SceneManager());
 	initialize(hInstance);
 }
 
@@ -67,8 +71,11 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 	m_hglCtx = createglContext();
 
 	setupPresetLayout();
-
 	ShowWindow(m_hwnd, SW_NORMAL);
+
+	// Active scene shared amongst all viewports (if we have a scenemanager)
+	if (mp_sceneManager)
+		sceneShare();
 
 	glClearColor(.0f, .0f, .0f, 1.0f);
 	glClearDepth(1.0);
@@ -109,6 +116,53 @@ HGLRC Canvas::createglContext() {
 	return hglrc;
 }
 
+bool Canvas::attachSceneToViewport(Scene_sptr pscene, const int& index) {
+	if (!pscene || index < 0 || index >= mv_pViewports.size()) 
+		return false;
+
+	mb_shareScene = false;
+	mv_pViewports[index]->setScene(pscene);
+
+	return true;
+}
+
+bool Canvas::attachSceneToViewport(Scene_sptr pscene, const std::string& vtag) {
+	if (!pscene) return false;
+
+	Viewport_sptr pv = findViewport(vtag);
+	if (!pv) return false;
+
+	mb_shareScene = false;
+	pv->setScene(pscene);
+
+	return true;
+}
+
+bool Canvas::attachSceneToViewport(const std::string& stag, const std::string& vtag) {
+	if (mp_sceneManager) {
+		Scene_sptr ps = mp_sceneManager->findScene(stag);
+		if (ps) {
+			Viewport_sptr pv = findViewport(vtag);
+			if (pv) {
+				mb_shareScene = false;
+				pv->setScene(ps);
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void Canvas::sceneShare() {
+	mb_shareScene = true;
+	if (hasViewports() && mp_sceneManager) {
+		for (auto v : mv_pViewports)
+			v->setScene(mp_sceneManager->getCurrentScene());
+	}
+}
+
 void Canvas::addViewport(Viewport_sptr pviewport) {
 	mv_pViewports.push_back(pviewport);
 }
@@ -120,7 +174,7 @@ bool Canvas::removeViewport(const std::string& tag) {
 		mv_pViewports.begin(), mv_pViewports.end(),
 		[](Viewport_sptr v)-> bool { return v->getTag() == _tag; });
 
-	if (*vit) {
+	if (vit != mv_pViewports.end()) {
 		int index = std::distance(mv_pViewports.begin(), vit);
 
 		return removeViewportAt(index);
@@ -137,6 +191,17 @@ bool Canvas::removeViewportAt(const int& index) {
 	mv_pViewports.erase(mv_pViewports.begin() + index);
 
 	return (mv_pViewports.size() < pre);
+}
+
+Viewport_sptr Canvas::findViewport(const std::string& tag) {
+	static std::string _tag = tag;
+
+	PViewports::iterator vit = std::find_if(
+		mv_pViewports.begin(), mv_pViewports.end(),
+		[](Viewport_sptr v)-> bool { return v->getTag() == _tag; });
+
+
+	return (vit != mv_pViewports.end()) ? (*vit) : nullptr;
 }
 
 void Canvas::resize(int w, int h) {
@@ -186,14 +251,22 @@ void Canvas::resize(int w, int h) {
 	}
 }
 
+void Canvas::update() {
+	if (mp_sceneManager)
+		mp_sceneManager->update();
+
+	if (hasViewports()) {
+		for (auto v : mv_pViewports)
+			v->update();
+	}
+}
+
 void Canvas::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (hasViewports()) {
-		for (auto v : mv_pViewports) {
-			v->update();
+		for (auto v : mv_pViewports) 
 			v->render();
-		}
 	}
 
 	SwapBuffers(m_hDevCtx);

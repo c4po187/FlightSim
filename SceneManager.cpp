@@ -131,6 +131,34 @@ bool SceneManager::removeScene(const std::string& tag) {
 	return removeSceneAt(index);
 }
 
+Scene_sptr SceneManager::findScene(const unsigned int& id) {
+	static unsigned int _id = id;
+
+	PScenes::iterator sit = std::find_if(
+		mv_pScenes.begin(), mv_pScenes.end(),
+		[](Scene_sptr s)-> bool { return s->getID() == _id; });
+
+	return (sit != mv_pScenes.end()) ? (*sit) : nullptr;
+}
+
+Scene_sptr SceneManager::findScene(const std::string& tag) {
+	static std::string _tag = tag;
+
+	PScenes::iterator sit = std::find_if(
+		mv_pScenes.begin(), mv_pScenes.end(),
+		[](Scene_sptr s)-> bool { return s->getTag() == _tag; });
+
+	return (sit != mv_pScenes.end()) ? (*sit) : nullptr;
+}
+
+Scene_sptr SceneManager::getSceneByIndex(const int& index) {
+	if (!mv_pScenes.empty() && index >= 0 && index < mv_pScenes.size()) {
+		return mv_pScenes[index];
+	}
+
+	return nullptr;
+}
+
 bool SceneManager::previousScene() {
 	--m_index;
 	
@@ -166,12 +194,6 @@ void SceneManager::activateScene(const std::string& tag) {
 void SceneManager::update() {
 	// Set the last scene boolean based on the following condition
 	mb_lastScene = (m_index == (getSceneQuantity() - 1));
-
-	// Update and render the current scene, if it's set and active
-	if (mp_currentScene && mp_currentScene->isActive()) {
-		mp_currentScene->update();
-		mp_currentScene->render();
-	}
 }
 
 void SceneManager::clean() {

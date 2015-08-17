@@ -50,7 +50,7 @@ Application_sptr Application::createApplication(const HINSTANCE& hInstance, cons
 
 		if (sp_app->mb_registered = sp_app->registerWindowClass(hInstance)) {
 			sp_app->mp_canvas = Canvas_sptr(
-				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_3V | VP_FITCANVAS), NULL));
+				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_3V | VP_FITCANVAS), NULL, true));
 		}
 	}
 
@@ -96,6 +96,7 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 			break;
 #endif
 		case WM_PAINT:
+			sp_app->getCanvas()->update();
 			sp_app->getCanvas()->render();
 			break;
 		case WM_ERASEBKGND:

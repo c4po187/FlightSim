@@ -3,6 +3,14 @@
  *
  * Rici Underwood © 2015
  * c4po187@gmail.com
+ *
+ * @TODO:
+ *		- Projection Matrices for each viewport composed from the camera
+ *		  once this object has been implemented.
+ *		- Each viewport should be able to clear to its own colour.
+ *		- Create the border, also with its own colour. A good approach
+ *		  would be to use a UI such as GEGUI to keep it the border in
+ *		  parallel with the viewing plane.
  */
 
 #ifndef __VIEWPORT_H__
@@ -31,6 +39,11 @@ namespace EUMD_FlightSimulator {
 
 		namespace Graphics {
 
+			enum PROJECTION_TYPE {
+				ORTHOGONAL,
+				PERSPECTIVE
+			};
+
 			class Viewport;
 
 			typedef std::tr1::shared_ptr<Viewport> Viewport_sptr;
@@ -55,6 +68,7 @@ namespace EUMD_FlightSimulator {
 					inline const U32&				getHeight() const { return m_height; }
 					inline const std::string&		getTag() const { return m_tag; }
 					inline Scene_sptr				getScene() { return mp_scene; }
+					inline const bool&				hasScene() const { return (mp_scene) ? true : false; }
 					inline const Vec4&				getClearColor() const { return m_clearColor; }
 					inline const Vec4&				getBorderColor() const { return m_borderColor; }
 					inline const float&				getBorderThickness() const { return m_borderThickness; }

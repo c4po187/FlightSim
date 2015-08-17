@@ -67,6 +67,9 @@ namespace EUMD_FlightSimulator {
 				void						addScene(Scene_sptr pscene);
 				bool						removeSceneAt(const int& index);
 				bool						removeScene(const std::string& tag);
+				Scene_sptr					findScene(const unsigned int& id);
+				Scene_sptr					findScene(const std::string& tag);
+				Scene_sptr					getSceneByIndex(const int& index);
 				bool						previousScene();
 				bool						nextScene();
 				void						activateScene(const std::string& tag);

@@ -28,7 +28,7 @@ namespace EUMD_FlightSimulator {
 		#define EX_INV_COMP_TYPE	std::exception("ERROR: Invalid Component type.")
 		#define EX_INV_RES_TYPE		std::exception("ERROR: Invalid Resource type.")
 		#define EX_INV_ENT_TYPE		std::exception("ERROR: Invalid Entity type.") 
-		#define EX_INV_TAG			std::exception("ERROR: Tag does not exist.")
+		#define EX_INV_TAG			std::runtime_error("ERROR: Tag does not exist.")
 		#define EX_IOR				std::out_of_range("ERROR: Index out of range.")
 		#define EX_XML_READ			std::ios_base::failure("ERROR: Failed to read XML file.")
 		#define EX_XML_PARSE		std::runtime_error("ERROR: Failed to parse XML data.")

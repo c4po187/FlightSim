@@ -19,6 +19,7 @@
 #include <Windows.h>
 #include "IApplicationObject.h"
 #include "Viewport.h"
+#include "SceneManager.h"
 
 using namespace EUMD_FlightSimulator::Utilities;
 
@@ -60,31 +61,46 @@ namespace EUMD_FlightSimulator {
 			/* Ctor, Dtor */
 
 			Canvas(const HINSTANCE& hInstance, const int width, const int height,
-				U16 layoutFlags, Viewport_sptr pviewport);
+				U16 layoutFlags, Viewport_sptr pviewport, bool useSceneManager);
 			Canvas(const HINSTANCE& hInstance, const int width, const int height,
-				U16 layoutFlags, PViewports viewports);
+				U16 layoutFlags, PViewports viewports, bool useSceneManager);
 			Canvas(const HINSTANCE& hInstance, const int width, const int height);
 			Canvas();
 			~Canvas();
 
 			/* Accessors */
 
+			inline const int&				getWidth() const { return m_width; }
+			inline const int&				getHeight() const { return m_height; }
 			inline const HDC&				getDeviceContext() const { return m_hDevCtx; }
 			inline const HGLRC&				getGLContext() const { return m_hglCtx; }
 			inline const HWND&				getWindowHandle() const { return m_hwnd; }
 			inline const U16&				getLayoutFlag() const { return m_layoutFlag; }
+			inline const PViewports&		getViewports() const { return mv_pViewports; }
 			inline const bool&				hasViewports() const { return !mv_pViewports.empty(); }
+			inline SceneManager_sptr		getSceneManager() { return mp_sceneManager; }
 
 			/* Modifiers */
 
 			inline void						setLayoutFlag(const U16& flag) { m_layoutFlag = flag; }
+			inline void						setViewports(const PViewports& viewports) { 
+				mv_pViewports = viewports; 
+			}
+			inline void						setSceneManager(SceneManager_sptr sm) { mp_sceneManager = sm; }
 
 			/* Functions */
 
 			void							addViewport(Viewport_sptr pviewport);
 			bool							removeViewport(const std::string& tag);
 			bool							removeViewportAt(const int& index);
+			Viewport_sptr					findViewport(const std::string& tag);
+			bool							attachSceneToViewport(Scene_sptr pscene, const int& index);
+			bool							attachSceneToViewport(Scene_sptr pscene, const std::string& vtag);
+			bool							attachSceneToViewport(const std::string& stag,
+																  const std::string& vtag);
+			void							sceneShare();
 			void							resize(int w, int h);
+			void							update();
 			void							render();
 
 			/* Implementations */
@@ -102,6 +118,8 @@ namespace EUMD_FlightSimulator {
 			int								m_width,
 											m_height;
 			PViewports						mv_pViewports;
+			SceneManager_sptr				mp_sceneManager;
+			bool							mb_shareScene;
 			U16								m_layoutFlag;
 
 			/* Functions */

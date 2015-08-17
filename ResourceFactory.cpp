@@ -100,7 +100,7 @@ Resource_sptr ResourceFactory::findResource(const int& id) {
 		mv_pResources.begin(), mv_pResources.end(), 
 		[](Resource_sptr pr)-> bool { return pr->getID() == _id; });
 	
-	return (*prit);
+	return (prit != mv_pResources.end()) ? (*prit) : nullptr;
 }
 
 Resource_sptr ResourceFactory::findResource(const std::string& tag) {
@@ -110,7 +110,7 @@ Resource_sptr ResourceFactory::findResource(const std::string& tag) {
 		mv_pResources.begin(), mv_pResources.end(),
 		[](Resource_sptr pr)-> bool { return pr->getTag() == _tag; });
 
-	return (*prit);
+	return (prit != mv_pResources.end()) ? (*prit) : nullptr;
 }
 
 void ResourceFactory::clean() {
