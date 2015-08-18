@@ -13,6 +13,7 @@
 #pragma region Prerequisites
 
 #include <glm\glm.hpp>
+#include <glm\gtc\quaternion.hpp>
 
 #pragma endregion
 

@@ -20,8 +20,11 @@
 #include "IApplicationObject.h"
 #include "Viewport.h"
 #include "SceneManager.h"
+#include "Camera.h"
+#include <glm\gtc\type_ptr.hpp>
 
 using namespace EUMD_FlightSimulator::Utilities;
+using namespace EUMD_FlightSimulator::Components;
 
 #pragma endregion
 
@@ -79,6 +82,7 @@ namespace EUMD_FlightSimulator {
 			inline const PViewports&		getViewports() const { return mv_pViewports; }
 			inline const bool&				hasViewports() const { return !mv_pViewports.empty(); }
 			inline SceneManager_sptr		getSceneManager() { return mp_sceneManager; }
+			inline Camera_sptr				getMainCamera() { return mp_mainCamera; }
 
 			/* Modifiers */
 
@@ -87,6 +91,7 @@ namespace EUMD_FlightSimulator {
 				mv_pViewports = viewports; 
 			}
 			inline void						setSceneManager(SceneManager_sptr sm) { mp_sceneManager = sm; }
+			inline void						setMainCamera(Camera_sptr pcamera) { mp_mainCamera = pcamera; }
 
 			/* Functions */
 
@@ -99,6 +104,11 @@ namespace EUMD_FlightSimulator {
 			bool							attachSceneToViewport(const std::string& stag,
 																  const std::string& vtag);
 			void							sceneShare();
+			bool							attachMainCameraToViewports();
+			bool							attachMainCameraToViewport(const int& index);
+			bool							attachMainCameraToViewport(const std::string& tag);
+			bool							attachCameraToViewport(Camera_sptr pcamera, const int& index);
+			bool							attachCameraToViewport(Camera_sptr pcamera, const std::string& tag);
 			void							resize(int w, int h);
 			void							update();
 			void							render();
@@ -121,6 +131,7 @@ namespace EUMD_FlightSimulator {
 			SceneManager_sptr				mp_sceneManager;
 			bool							mb_shareScene;
 			U16								m_layoutFlag;
+			Camera_sptr						mp_mainCamera;
 
 			/* Functions */
 

@@ -23,11 +23,14 @@
 #include <memory>
 #include <Windows.h>
 #include "Scene.h"
+#include "Camera.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
+#include <glm\gtc\type_ptr.hpp>
 
 using namespace EUMD_FlightSimulator;
 using namespace EUMD_FlightSimulator::Resources;
+using namespace EUMD_FlightSimulator::Components;
 
 #pragma endregion
 
@@ -54,6 +57,10 @@ namespace EUMD_FlightSimulator {
 
 					/* Ctor, Dtor */
 
+					Viewport(int x, int y, U32 width, U32 height,
+							 std::string tag, Camera_sptr pcamera);
+					Viewport(int x, int y, U32 width, U32 height,
+							 std::string tag, Camera_sptr pcamera, Scene_sptr pscene);
 					Viewport(int x, int y, U32 width, U32 height, 
 							 std::string tag, const Vec4& color, Scene_sptr pscene);
 					Viewport(int x, int y, U32 width, U32 height);
@@ -75,6 +82,7 @@ namespace EUMD_FlightSimulator {
 					inline const bool&				isActive() const { return mb_active; }
 					inline const bool&				isVisible() const { return mb_visible; }
 					inline const bool&				hasBorder() const { return mb_border; }
+					inline Camera_sptr				getViewCamera() { return mp_viewCam; }
 
 					/* Modifiers */
 
@@ -90,6 +98,7 @@ namespace EUMD_FlightSimulator {
 					inline void						setActive(const bool& active) { mb_active = active; }
 					inline void						setVisible(const bool& visible) { mb_visible = visible; }
 					inline void						setBorder(const bool& border) { mb_border = border; }
+					inline void						setViewCamera(Camera_sptr camera) { mp_viewCam = camera; }
 
 					/* Implementations */
 
@@ -118,6 +127,7 @@ namespace EUMD_FlightSimulator {
 					bool							mb_active,
 													mb_visible,
 													mb_border;
+					Camera_sptr						mp_viewCam;
 
 					///// Tests /////
 

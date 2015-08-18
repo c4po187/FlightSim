@@ -53,6 +53,11 @@ Canvas::~Canvas() {
 /* Functions */
 
 void Canvas::initialize(const HINSTANCE& hInstance) {
+	// Create default camera
+	mp_mainCamera = Camera_sptr(new Camera(
+		Vec3(), Vec3(.0f, 1.0f, .0f), Vec3(.0f, .0f, -1.0f),
+		45.0f, static_cast<float>(m_width / m_height), .1f, 100.0f, "MainCamera"));
+	
 	m_hwnd = CreateWindowEx(
 		WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, 
 		"Flight Simulator", 
@@ -163,6 +168,64 @@ void Canvas::sceneShare() {
 	}
 }
 
+bool Canvas::attachMainCameraToViewports() {
+	if (!mp_mainCamera || !hasViewports()) return false;
+
+	for (auto v : mv_pViewports)
+		v->setViewCamera(mp_mainCamera);
+
+	return true;
+}
+
+bool Canvas::attachMainCameraToViewport(const int& index) {
+	if (mp_mainCamera && hasViewports()) {
+		if (index < 0 || index >= mv_pViewports.size())
+			return false;
+		
+		mv_pViewports[index]->setViewCamera(mp_mainCamera);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Canvas::attachMainCameraToViewport(const std::string& tag) {
+	if (mp_mainCamera && hasViewports()) {
+		Viewport_sptr pv = findViewport(tag);
+		if (!pv) return false;
+
+		pv->setViewCamera(mp_mainCamera);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Canvas::attachCameraToViewport(Camera_sptr pcamera, const int& index) {
+	if (hasViewports() && index >= 0 && index < mv_pViewports.size()) {
+		mv_pViewports[index]->setViewCamera(pcamera);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Canvas::attachCameraToViewport(Camera_sptr pcamera, const std::string& tag) {
+	if (hasViewports()) {
+		Viewport_sptr pv = findViewport(tag);
+		if (!pv) return false;
+
+		pv->setViewCamera(pcamera);
+
+		return true;
+	}
+
+	return false;
+}
+
 void Canvas::addViewport(Viewport_sptr pviewport) {
 	mv_pViewports.push_back(pviewport);
 }
@@ -213,7 +276,9 @@ void Canvas::resize(int w, int h) {
 	m_width = w;
 	m_height = h;
 
-	GLdouble aspect = static_cast<GLdouble>(m_width) / static_cast<GLdouble>(m_height);
+	float aspect = static_cast<float>(m_width) / static_cast<float>(m_height);
+	mp_mainCamera->setAspectRatio(aspect);
+	mp_mainCamera->updateProjectionMatrix();
 
 	// Resize base viewport
 	glViewport(0, 0, static_cast<GLsizei>(m_width), static_cast<GLsizei>(m_height));
@@ -221,7 +286,7 @@ void Canvas::resize(int w, int h) {
 	// Set the perspective matrix accordingly
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, aspect, .1, 500.0);
+	glLoadMatrixf(glm::value_ptr(mp_mainCamera->getProjectionMatrix()));
 
 	/**
 	 * Create width & height scalars that reflect the percentage change
@@ -375,6 +440,11 @@ void Canvas::setupPresetLayout() {
 					for (auto v : mv_pViewports)
 						v->setBorder(true);
 				}
+			}
+
+			if (mp_mainCamera) {
+				for (auto v : mv_pViewports)
+					v->setViewCamera(mp_mainCamera);
 			}
 
 			return;

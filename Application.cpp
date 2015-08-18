@@ -90,6 +90,30 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 					sp_app->clean();
 					PostQuitMessage(0);
 					break;
+
+				///// Camera Testing /////
+				case 'W':	// Cam Forward
+					sp_app->getCanvas()->getMainCamera()->setPosition(
+						sp_app->getCanvas()->getMainCamera()->getPosition() - Vec3(.0f, .0f, .05f));
+					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
+					break;
+				case 'A':	// Cam Strafe Left
+					sp_app->getCanvas()->getMainCamera()->setPosition(
+						sp_app->getCanvas()->getMainCamera()->getPosition() - Vec3(.05f, .0f, .0f));
+					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
+					break;
+				case 'S':	// Cam Backwards
+					sp_app->getCanvas()->getMainCamera()->setPosition(
+						sp_app->getCanvas()->getMainCamera()->getPosition() + Vec3(.0f, .0f, .05f));
+					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
+					break;
+				case 'D':	// Cam Strafe Right
+					sp_app->getCanvas()->getMainCamera()->setPosition(
+						sp_app->getCanvas()->getMainCamera()->getPosition() + Vec3(.05f, .0f, .0f));
+					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
+					break;
+				//////////////////////////
+
 				default:
 					break;
 			}

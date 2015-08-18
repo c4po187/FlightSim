@@ -17,16 +17,25 @@ using namespace EUMD_FlightSimulator::Core::Graphics;
 
 /* Ctor, Dtor */
 
+Viewport::Viewport(int x,  int y, U32 width, U32 height,
+				   std::string tag, Camera_sptr pcamera) :
+				   m_x(x), m_y(y), m_width(width), m_height(height),
+				   m_tag(tag), mp_viewCam(pcamera) { initialize(); }
+
+Viewport::Viewport(int x, int y, U32 width, U32 height,
+				   std::string tag, Camera_sptr pcamera, Scene_sptr pscene) :
+				   m_x(x), m_y(y), m_width(width), m_height(height),
+				   m_tag(tag), mp_viewCam(pcamera), mp_scene(pscene) { initialize(); }
+
 Viewport::Viewport(int x, int y, U32 width, U32 height, 
 				   std::string tag, const Vec4& color, Scene_sptr pscene) :
 				   m_x(x), m_y(y), m_width(width), m_height(height),
 				   m_tag(tag), m_clearColor(color), mp_scene(pscene) { initialize(); }
 
 Viewport::Viewport(int x, int y, U32 width, U32 height) :
-	m_x(x), m_y(y), m_width(width), m_height(height), 
-	mp_scene(NULL), m_clearColor(Vec4(.0f, .0f, .0f, 1.0f)) { initialize(); }
+	m_x(x), m_y(y), m_width(width), m_height(height) { initialize(); }
 
-Viewport::Viewport() { }
+Viewport::Viewport() { ; }
 
 Viewport::~Viewport() {
 	clean();
@@ -55,7 +64,9 @@ void Viewport::update() {
 	if (mp_scene && mb_active)
 		mp_scene->update();
 
+	///// Multi Viewport Testing /////
 	m_rotZ += .05f;
+	//////////////////////////////////
 }
 
 void Viewport::render() {
@@ -65,12 +76,15 @@ void Viewport::render() {
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+		if (mp_viewCam)
+			glLoadMatrixf(glm::value_ptr(mp_viewCam->getViewMatrix()));
 
+		///// Multi Viewport Testing /////
 		glTranslatef(.0f, .0f, -2.5f);
 		glRotatef(m_rotZ, .0f, .0f, 1.0f);
-
 		glColor3f(1.0f, 1.0f, .0f);
 		glRectf(-.5f, .5f, .5f, -.5f);
+		//////////////////////////////////
 
 		if (mp_scene)
 			mp_scene->render();
