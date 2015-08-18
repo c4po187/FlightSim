@@ -104,7 +104,7 @@ void Camera::updateProjectionMatrix() {
 }
 
 void Camera::orient() {
-	m_orientation *= glm::quat_cast(glm::yawPitchRoll(m_yaw, -m_pitch, m_roll));
+	m_orientation *= glm::quat_cast(glm::yawPitchRoll(m_yaw, m_pitch, m_roll));
 }
 
 #pragma endregion

@@ -10,11 +10,15 @@
 
 #pragma once
 
+#define MCT 0
+#define KCT 1
+
 #pragma region Prerequisites
 
 #include "IApplicationObject.h"
 #include <memory>
 #include <Windows.h>
+#include <Windowsx.h>
 #include "Canvas.h"
 #include "ResourceFactory.h"
 
@@ -73,8 +77,15 @@ namespace EUMD_FlightSimulator {
 			ResourceFactory_sptr				mp_rscFactory;
 			Canvas_sptr							mp_canvas;
 			bool								mb_registered,
-												mb_kill;
+												mb_kill,
+												mb_ranOnce;
 			STICKYKEYS							m_stickyKeys;
+
+			///// Camera Testing /////
+			POINT								m_lastMouse;
+			int									m_midx, m_midy;
+			bool								mb_setCursor;
+			//////////////////////////
 
 			/* Functions */
 
