@@ -21,7 +21,6 @@
 #include "Viewport.h"
 #include "SceneManager.h"
 #include "Camera.h"
-#include <glm\gtc\type_ptr.hpp>
 
 using namespace EUMD_FlightSimulator::Utilities;
 using namespace EUMD_FlightSimulator::Components;

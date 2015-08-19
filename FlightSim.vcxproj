@@ -97,6 +97,8 @@
     <ClInclude Include="ResourceFactory.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Triangle.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="Viewport.h" />
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>

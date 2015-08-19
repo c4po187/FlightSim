@@ -55,6 +55,6 @@ namespace EUMD_FlightSimulator {
 
 #pragma endregion
 
-#endif /*!__XML_PARSER_H__ */
+#endif /* !__XML_PARSER_H__ */
 
 // END OF FILE

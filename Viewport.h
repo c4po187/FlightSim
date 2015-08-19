@@ -26,7 +26,6 @@
 #include "Camera.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
-#include <glm\gtc\type_ptr.hpp>
 
 using namespace EUMD_FlightSimulator;
 using namespace EUMD_FlightSimulator::Resources;
