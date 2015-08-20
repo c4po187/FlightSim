@@ -53,6 +53,12 @@ Canvas::~Canvas() {
 /* Functions */
 
 void Canvas::initialize(const HINSTANCE& hInstance) {
+	///// OBJ TESTING /////
+	PTriangles triangles;
+	if (!OBJLoader::loadOBJtoMesh("house.obj", triangles))
+		std::cout << "Something wicked happened!" << std::endl;
+	///////////////////////
+	
 	// Create default camera
 	mp_mainCamera = Camera_sptr(new Camera(
 		Vec3(), Vec3(.0f, 1.0f, .0f), Vec3(.0f, .0f, -1.0f),

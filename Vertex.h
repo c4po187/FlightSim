@@ -13,6 +13,7 @@
 #pragma region Prerequisites
 
 #include "Defines.h"
+#include <memory>
 
 using namespace EUMD_FlightSimulator;
 
@@ -31,6 +32,7 @@ namespace EUMD_FlightSimulator {
 			typedef struct tagVERTEX {
 				Vec4 position;
 				Vec4 normal;
+				Vec4 tangent;
 				Vec4 color;
 				Vec2 uv;
 			} Vertex, *PVertex;
@@ -39,6 +41,11 @@ namespace EUMD_FlightSimulator {
 				Vec3 position;
 				Vec3 color;
 			} NoobVertex, *PNoobVertex;
+
+			/* Shared Pointer definitions */
+
+			typedef std::tr1::shared_ptr<Vertex> Vertex_sptr;
+			typedef std::tr1::shared_ptr<NoobVertex> NoobVertex_sptr;
 		}
 	}
 }

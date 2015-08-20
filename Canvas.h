@@ -22,6 +22,10 @@
 #include "SceneManager.h"
 #include "Camera.h"
 
+///// OBJ TESTING /////
+#include "OBJLoader.h"
+///////////////////////
+
 using namespace EUMD_FlightSimulator::Utilities;
 using namespace EUMD_FlightSimulator::Components;
 

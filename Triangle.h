@@ -12,6 +12,7 @@
 
 #pragma region Prerequisites
 
+#include <vector>
 #include "Vertex.h"
 
 #pragma endregion
@@ -31,6 +32,11 @@ namespace EUMD_FlightSimulator {
 				Vertex p1;
 				Vertex p2;
 			} Triangle, *PTriangle;
+
+			/* Shared Pointer definitions */
+
+			typedef std::tr1::shared_ptr<Triangle> Triangle_sptr;
+			typedef std::vector<Triangle_sptr> PTriangles;
 		}
 	}
 }
