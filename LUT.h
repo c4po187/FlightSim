@@ -31,8 +31,8 @@ namespace EUMD_FlightSimulator {
 		 * to reflect the array sizes defined below.
 		 */
 
-		#define SZ_SUBRESOURCES		2
-		#define SZ_SUBCOMPONENTS	5
+		#define SZ_SUBRESOURCES 2
+		#define SZ_SUBCOMPONENTS 2
 
 		#pragma endregion
 		
@@ -44,11 +44,8 @@ namespace EUMD_FlightSimulator {
 		};
 
 		static std::string SubComponents[] = {
-			"Collider",
-			"Material",
-			"Mesh",
-			"Texture",
-			"Transform"
+			"Camera",
+			"Shader"
 		};
 	}
 }

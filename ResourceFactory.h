@@ -59,26 +59,26 @@ namespace EUMD_FlightSimulator {
 
 				/* Accessors */
 
-				inline PResources			getResources() { return mv_pResources; }
-				inline unsigned int*		getResourceIDIterator_ptr() { return &m_idIterator; }
+				inline PResources getResources() { return mv_pResources; }
+				inline unsigned int* getResourceIDIterator_ptr() { return &m_idIterator; }
 
 				///// Tests /////
 
-				inline PXMLTester			getXMLTester() { return &m_xmlTester; }
+				inline PXMLTester getXMLTester() { return &m_xmlTester; }
 
 				/////////////////
 
 				/* Functions */
 
-				void						addResource(Resource_sptr presource);
-				bool						removeResourceAt(const int& index);
-				Resource_sptr				findResource(const int& id);
-				Resource_sptr				findResource(const std::string& tag);
-				void						clean();
+				void addResource(Resource_sptr presource);
+				bool removeResourceAt(const int& index);
+				Resource_sptr findResource(const int& id);
+				Resource_sptr findResource(const std::string& tag);
+				void clean();
 
 				/* Implementations */
 
-				inline const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
+				inline const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
 					return "ResourceFactory"; 
 				}
 
@@ -86,20 +86,20 @@ namespace EUMD_FlightSimulator {
 
 				/* Members */
 
-				PResources					mv_pResources;
-				unsigned int				m_idIterator;
-				XMLTree						m_currentXMLTree;
+				PResources mv_pResources;
+				unsigned int m_idIterator;
+				XMLTree m_currentXMLTree;
 
 				///// Tests /////
 
-				XMLTester					m_xmlTester;
+				XMLTester m_xmlTester;
 
 				/////////////////
 
 				/* Functions */
 
-				void						setupInitialResources();
-				void						setResourceId(Resource_sptr presource);
+				void setupInitialResources();
+				void setResourceId(Resource_sptr presource);
 		};
 	}
 }

@@ -25,17 +25,17 @@ namespace EUMD_FlightSimulator {
 
 		/* Type Definitions */
 
-		typedef unsigned short		U16;
-		typedef unsigned long		U32;
-		typedef unsigned long long	U64;
-		typedef const char*			Cstr;
-		typedef glm::vec2			Vec2;
-		typedef glm::vec3			Vec3;
-		typedef glm::vec4			Vec4;
-		typedef glm::mat2			Matrix2;
-		typedef glm::mat3			Matrix3;
-		typedef glm::mat4			Matrix4;
-		typedef glm::quat			Quatn;
+		typedef unsigned short U16;
+		typedef unsigned long U32;
+		typedef unsigned long long U64;
+		typedef const char* Cstr;
+		typedef glm::vec2 Vec2;
+		typedef glm::vec3 Vec3;
+		typedef glm::vec4 Vec4;
+		typedef glm::mat2 Matrix2;
+		typedef glm::mat3 Matrix3;
+		typedef glm::mat4 Matrix4;
+		typedef glm::quat Quatn;
 }
 
 #pragma endregion

@@ -10,6 +10,8 @@
 
 #pragma once
 
+/* Debugging Flags */
+
 #define MCT 0
 #define KCT 1
 
@@ -45,51 +47,47 @@ namespace EUMD_FlightSimulator {
 
 			/* Accessors */
 
-			inline static Application_sptr		getApplication() { return sp_app; }
-			inline Canvas_sptr					getCanvas() { return mp_canvas; }
-			inline const bool&					isRegistered() const { return mb_registered; }
-			inline LPSTICKYKEYS					getStickyKeys_ptr() { return &m_stickyKeys; }
+			inline static Application_sptr getApplication() { return sp_app; }
+			inline Canvas_sptr getCanvas() { return mp_canvas; }
+			inline const bool& isRegistered() const { return mb_registered; }
+			inline LPSTICKYKEYS getStickyKeys_ptr() { return &m_stickyKeys; }
 
 			/* Functions */
 
-			static Application_sptr				createApplication(const HINSTANCE& hInstance, 
-																  const int w, 
-																  const int h);
-			int									run();
-			void								kill();
-			void								clean();
+			static Application_sptr createApplication(const HINSTANCE& hInstance, const int w, const int h);
+			int run();
+			void kill();
+			void clean();
 
 			/* Implementations */
 
-			inline const std::string			getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
+			inline const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
 				return "Application"; 
 			}
 
 			/* Callbacks */
 
-			static LRESULT CALLBACK				wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+			static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 		private:
 
 			/* Members */
 
-			static Application_sptr				sp_app;
-			ResourceFactory_sptr				mp_rscFactory;
-			Canvas_sptr							mp_canvas;
-			bool								mb_registered,
-												mb_kill,
-												mb_ranOnce;
-			STICKYKEYS							m_stickyKeys;
+			static Application_sptr sp_app;
+			ResourceFactory_sptr mp_rscFactory;
+			Canvas_sptr mp_canvas;
+			bool mb_registered, mb_kill, mb_ranOnce;
+			STICKYKEYS m_stickyKeys;
 
 			///// Camera Testing /////
-			POINT								m_lastMouse;
-			int									m_midx, m_midy;
-			bool								mb_setCursor;
+			POINT m_lastMouse;
+			int m_midx, m_midy;
+			bool mb_setCursor;
 			//////////////////////////
 
 			/* Functions */
 
-			bool								registerWindowClass(const HINSTANCE& hInstance);
+			bool registerWindowClass(const HINSTANCE& hInstance);
 		};
 	}
 }

@@ -38,7 +38,7 @@ namespace EUMD_FlightSimulator {
 
 				/* Implementations */
 
-				inline const std::string		getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override {
+				inline const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override {
 					return (tInfo_ex) ? (Resource::getType() + "." + "Entity") : "Entity";
 				}
 

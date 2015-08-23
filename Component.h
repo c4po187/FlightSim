@@ -39,22 +39,22 @@ namespace EUMD_FlightSimulator {
 
 				/* Accessors */
 
-				inline const std::string&			getTag() const { return m_tag; }
-				inline const PComponents&			getChildren() const { return mv_pChildComponents; }
+				inline const std::string& getTag() const { return m_tag; }
+				inline const PComponents& getChildren() const { return mv_pChildComponents; }
 
 				/* Modifiers */
 
-				inline void							setTag(const std::string& tag) { m_tag = tag; }
+				inline void setTag(const std::string& tag) { m_tag = tag; }
 
 				/* Functions */
 
-				void								addComponent(Component_sptr pComponent);
-				bool								removeComponentAt(const int& index);
-				virtual void						clean();
+				void addComponent(Component_sptr pComponent);
+				bool removeComponentAt(const int& index);
+				virtual void clean();
 
 				/* Implementations */
 
-				inline virtual const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
+				inline virtual const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) { 
 					return "Component"; 
 				}
 
@@ -62,8 +62,8 @@ namespace EUMD_FlightSimulator {
 
 				/* Members */
 
-				std::string							m_tag;
-				PComponents							mv_pChildComponents;
+				std::string m_tag;
+				PComponents mv_pChildComponents;
 		};
 	}
 }

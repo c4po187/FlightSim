@@ -25,10 +25,10 @@ namespace EUMD_FlightSimulator {
 
 	/* Macros */
 
-	#define DEFAULT_TYPE_INFO			0
-	#define EXTENDED_TYPE_INFO			1
-	#define DST							"Destroying: "
-	#define DST_NOTIFY					std::cout << DST << getType() << std::endl
+	#define DEFAULT_TYPE_INFO 0
+	#define EXTENDED_TYPE_INFO 1
+	#define DST "Destroying: "
+	#define DST_NOTIFY std::cout << DST << getType() << std::endl
 
 	typedef bool TypeInfo;
 
@@ -40,8 +40,8 @@ namespace EUMD_FlightSimulator {
 
 			/* Pure Virtual Functions */
 
-			virtual const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) = 0;
-			virtual void				clean() = 0;
+			virtual const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) = 0;
+			virtual void clean() = 0;
 	};
 }
 

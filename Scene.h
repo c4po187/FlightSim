@@ -39,12 +39,12 @@ namespace EUMD_FlightSimulator {
 
 				/* Functions */
 
-				void						update();
-				void						render();
+				void update();
+				void render();
 
 				/* Implementations */
 
-				inline const std::string	getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override { 
+				inline const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override { 
 					return (tInfo_ex) ? (Resource::getType() + "." + "Scene") : "Scene";
 				}
 
@@ -52,7 +52,7 @@ namespace EUMD_FlightSimulator {
 
 				/* Members */
 
-				PEntities					mv_pEntities;
+				PEntities mv_pEntities;
 		};
 	}
 }
