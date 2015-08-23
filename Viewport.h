@@ -74,7 +74,7 @@ namespace EUMD_FlightSimulator {
 					inline const U32&				getHeight() const { return m_height; }
 					inline const std::string&		getTag() const { return m_tag; }
 					inline Scene_sptr				getScene() { return mp_scene; }
-					inline const bool&				hasScene() const { return (mp_scene) ? true : false; }
+					inline const bool				hasScene() const { return (mp_scene) ? true : false; }
 					inline const Vec4&				getClearColor() const { return m_clearColor; }
 					inline const Vec4&				getBorderColor() const { return m_borderColor; }
 					inline const float&				getBorderThickness() const { return m_borderThickness; }

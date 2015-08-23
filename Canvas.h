@@ -83,7 +83,7 @@ namespace EUMD_FlightSimulator {
 			inline const HWND&				getWindowHandle() const { return m_hwnd; }
 			inline const U16&				getLayoutFlag() const { return m_layoutFlag; }
 			inline const PViewports&		getViewports() const { return mv_pViewports; }
-			inline const bool&				hasViewports() const { return !mv_pViewports.empty(); }
+			inline const bool				hasViewports() const { return !(mv_pViewports.empty()); }
 			inline SceneManager_sptr		getSceneManager() { return mp_sceneManager; }
 			inline Camera_sptr				getMainCamera() { return mp_mainCamera; }
 

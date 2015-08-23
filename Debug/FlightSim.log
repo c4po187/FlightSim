@@ -1,25 +1,19 @@
-﻿Build started 20/08/2015 03:47:48.
+﻿Build started 23/08/2015 19:13:54.
      1>Project "C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\FlightSim\FlightSim.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt Application.cpp Canvas.cpp main.cpp
          Application.cpp
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\viewport.h(77): warning C4172: returning address of local variable or temporary
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(97): warning C4129: 'd' : unrecognized character escape sequence
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(143): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(171): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(200): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(246): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.h(86): warning C4172: returning address of local variable or temporary
          Generating Code...
          Compiling...
          Canvas.cpp
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\viewport.h(77): warning C4172: returning address of local variable or temporary
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(97): warning C4129: 'd' : unrecognized character escape sequence
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(143): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(171): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(200): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(246): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.h(86): warning C4172: returning address of local variable or temporary
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(65): warning C4316: 'EUMD_FlightSimulator::Components::Camera' : object allocated on the heap may not be aligned 16
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(131): warning C4018: '>=' : signed/unsigned mismatch
      1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(188): warning C4018: '>=' : signed/unsigned mismatch
@@ -55,12 +49,13 @@
          Debug\ResourceFactory.obj
          Debug\Scene.obj
          Debug\SceneManager.obj
+         Debug\Shader.obj
          Debug\Viewport.obj
          FlightSim.vcxproj -> C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.exe
        BscMake:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\bscmake.exe /nologo /o"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.bsc" /n Debug\Application.sbr Debug\Camera.sbr Debug\Canvas.sbr Debug\Component.sbr Debug\Entity.sbr Debug\main.sbr Debug\Resource.sbr Debug\ResourceFactory.sbr Debug\Scene.sbr Debug\SceneManager.sbr Debug\Viewport.sbr
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\bscmake.exe /nologo /o"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.bsc" /n Debug\Application.sbr Debug\Camera.sbr Debug\Canvas.sbr Debug\Component.sbr Debug\Entity.sbr Debug\main.sbr Debug\Resource.sbr Debug\ResourceFactory.sbr Debug\Scene.sbr Debug\SceneManager.sbr Debug\Shader.sbr Debug\Viewport.sbr
      1>Done Building Project "C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\FlightSim\FlightSim.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:16.74
+Time Elapsed 00:00:15.73

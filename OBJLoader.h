@@ -94,7 +94,7 @@ namespace EUMD_FlightSimulator {
 
 					// Construct regular expressions to check against
 					std::regex v("^f\\s(\\d+\\s?){3}");				// f v ..x3
-					std::regex vt("^f\\s(\d+/\\d+\\s?){3}");		// f v/vt ..x3
+					std::regex vt("^f\\s(\\d+/\\d+\\s?){3}");		// f v/vt ..x3
 					std::regex vtn("^f\\s((\\d+/){2}\\d+\\s?){3}"); // f v/vt/vn ..x3
 					std::regex vn("^f\\s(\\d+/{2}\\d+\\s?){3}");	// f v//vn ..x3
 
