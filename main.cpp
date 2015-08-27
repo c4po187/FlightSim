@@ -17,10 +17,10 @@
 
 #pragma region Libs
 
+#pragma comment(lib, "user32.lib")
+#pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "glew32.lib")
-#pragma comment(lib, "user32.lib")
 
 #pragma endregion
 
@@ -50,7 +50,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdSt
 
 #endif
 
-	EUMD_FlightSimulator::Core::Application_sptr app = 
+	EUMD_FlightSimulator::Core::Application_sptr app =
 		EUMD_FlightSimulator::Core::Application::createApplication(hInstance, 1280, 720);
 	app->run();
 

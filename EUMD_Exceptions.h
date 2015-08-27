@@ -25,6 +25,7 @@ namespace EUMD_FlightSimulator {
 	namespace Config {
 
 		#define EX_GENERAL std::exception("ERROR: Something wicked happened!")
+		#define EX_INIT_FAIL std::runtime_error("ERROR: Initialization failure.")
 		#define EX_INV_COMP_TYPE std::exception("ERROR: Invalid Component type.")
 		#define EX_INV_RES_TYPE std::exception("ERROR: Invalid Resource type.")
 		#define EX_INV_ENT_TYPE std::exception("ERROR: Invalid Entity type.") 

@@ -1,16 +1,10 @@
-﻿Build started 25/08/2015 05:34:58.
+﻿Build started 27/08/2015 07:34:33.
      1>Project "C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\FlightSim\FlightSim.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt Shader.cpp main.cpp
-         main.cpp
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(143): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(171): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(200): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(246): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-         Generating Code...
-         Compiling...
-         Shader.cpp
-         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt ShaderProgram.cpp
+         ShaderProgram.cpp
+     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\shaderprogram.cpp(186): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'unsigned int', possible loss of data
+     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\shaderprogram.cpp(196): warning C4244: 'argument' : conversion from 'std::streamoff' to 'GLsizei', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\glew-1.13.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Camera.obj
@@ -23,12 +17,13 @@
          Debug\Scene.obj
          Debug\SceneManager.obj
          Debug\Shader.obj
+         Debug\ShaderProgram.obj
          Debug\Viewport.obj
          FlightSim.vcxproj -> C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.exe
        BscMake:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\bscmake.exe /nologo /o"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.bsc" /n Debug\Application.sbr Debug\Camera.sbr Debug\Canvas.sbr Debug\Component.sbr Debug\Entity.sbr Debug\main.sbr Debug\Resource.sbr Debug\ResourceFactory.sbr Debug\Scene.sbr Debug\SceneManager.sbr Debug\Shader.sbr Debug\Viewport.sbr
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\bscmake.exe /nologo /o"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.bsc" /n Debug\Application.sbr Debug\Camera.sbr Debug\Canvas.sbr Debug\Component.sbr Debug\Entity.sbr Debug\main.sbr Debug\Resource.sbr Debug\ResourceFactory.sbr Debug\Scene.sbr Debug\SceneManager.sbr Debug\Shader.sbr Debug\ShaderProgram.sbr Debug\Viewport.sbr
      1>Done Building Project "C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\FlightSim\FlightSim.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:15.25
+Time Elapsed 00:00:10.78

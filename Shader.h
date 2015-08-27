@@ -13,9 +13,8 @@
 #pragma region Prerequisites
 
 #include "Component.h"
-#include <iostream>
+#include <sstream>
 #include <fstream>
-#include <GL\glew.h>
 
 #pragma endregion
 
@@ -24,6 +23,8 @@
 namespace EUMD_FlightSimulator {
 
 	namespace Components {
+
+		typedef unsigned int HSHADER;
 
 		enum SHADER_TYPE {
 			VERT,
@@ -49,24 +50,26 @@ namespace EUMD_FlightSimulator {
 
 				/* Accessors */
 
-				inline const unsigned int& getHandle() const { return m_handle; }
+				inline const HSHADER& getHandle() const { return m_handle; }
 				inline const SHADER_TYPE& getShaderType() const { return m_type; }
-
+				
 				/* Implementations */
 
 				inline const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override {
-					return (tInfo_ex) ? (Component::getType() + "." + "Shader") : "Shader"; }
+					return (tInfo_ex) ? (Component::getType() + ".Shader") : "Shader"; }
 
 				/* Functions */
 
-				static Shader_sptr createShaderFromSource(const std::string& filename, const std::string& tag, 
-					SHADER_TYPE type);
+				static Shader_sptr createShaderFromSource(const std::string& filename, SHADER_TYPE type, 
+					const std::string& tag = std::string());	
+				static Shader_sptr createShaderFromText(const std::string& text, SHADER_TYPE type,
+					const std::string& tag = std::string());
 
 			private:
 
 				/* Members */
 
-				unsigned int m_handle;
+				HSHADER m_handle;
 				SHADER_TYPE m_type;
 		};
 	}

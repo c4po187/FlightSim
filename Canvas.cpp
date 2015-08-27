@@ -53,12 +53,6 @@ Canvas::~Canvas() {
 /* Functions */
 
 void Canvas::initialize(const HINSTANCE& hInstance) {
-	///// OBJ TESTING /////
-	PTriangles triangles;
-	if (!OBJLoader::loadOBJtoMesh("house.obj", triangles))
-		std::cout << "Something wicked happened!" << std::endl;
-	///////////////////////
-	
 	// Create default camera
 	mp_mainCamera = Camera_sptr(new Camera(
 		Vec3(), Vec3(.0f, 1.0f, .0f), Vec3(.0f, .0f, -1.0f),
@@ -80,18 +74,35 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 
 	m_hDevCtx = GetDC(m_hwnd);
 	m_hglCtx = createglContext();
+	
+	GLenum glewerr = glewInit();
+	if (glewerr != GLEW_OK) {
+		std::cout << "Glew failed to initialize: " << glewGetErrorString(glewerr) << '\n' << std::endl;
+		throw EX_INIT_FAIL;
+	}
+	else {
+		std::cout << "Glew initialized successfully.\n\n";
+		std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << '\n' <<
+			"OpenGL Vendor: " << glGetString(GL_VENDOR) << '\n' <<
+			"OpenGL Renderer: " << glGetString(GL_RENDERER) << '\n' << std::endl;
+	}
 
 	setupPresetLayout();
 	ShowWindow(m_hwnd, SW_NORMAL);
-
-	// Active scene shared amongst all viewports (if we have a scenemanager)
-	if (mp_sceneManager)
-		sceneShare();
 
 	glClearColor(.0f, .0f, .0f, 1.0f);
 	glClearDepth(1.0);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
+
+	///// TESTING /////
+	mp_testVert = Shader::createShaderFromSource("noob.vert", SHADER_TYPE::VERT, "Noob_Vertex_Shader");
+	mp_testFrag = Shader::createShaderFromSource("noob.frag", SHADER_TYPE::FRAG, "Noob_Fragment_Shader");
+	///////////////////
+
+	// Active scene shared amongst all viewports (if we have a scenemanager)
+	if (mp_sceneManager)
+		sceneShare();
 
 	resize(m_width, m_height);
 }

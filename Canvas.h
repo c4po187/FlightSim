@@ -24,6 +24,7 @@
 
 ///// OBJ TESTING /////
 #include "OBJLoader.h"
+#include "Shader.h"
 ///////////////////////
 
 using namespace EUMD_FlightSimulator::Utilities;
@@ -133,6 +134,10 @@ namespace EUMD_FlightSimulator {
 			bool mb_shareScene;
 			U16 m_layoutFlag;
 			Camera_sptr mp_mainCamera;
+
+			///// Tests /////
+			Shader_sptr mp_testVert, mp_testFrag;
+			/////////////////
 
 			/* Functions */
 

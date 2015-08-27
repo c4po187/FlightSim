@@ -32,7 +32,7 @@ namespace EUMD_FlightSimulator {
 		 */
 
 		#define SZ_SUBRESOURCES 2
-		#define SZ_SUBCOMPONENTS 2
+		#define SZ_SUBCOMPONENTS 3
 
 		#pragma endregion
 		
@@ -45,7 +45,8 @@ namespace EUMD_FlightSimulator {
 
 		static std::string SubComponents[] = {
 			"Camera",
-			"Shader"
+			"Shader",
+			"ShaderProgram"
 		};
 	}
 }
