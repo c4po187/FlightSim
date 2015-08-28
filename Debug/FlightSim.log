@@ -1,49 +1,8 @@
-﻿Build started 28/08/2015 04:55:27.
+﻿Build started 28/08/2015 05:07:46.
      1>Project "C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\FlightSim\FlightSim.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt Application.cpp Camera.cpp Canvas.cpp Transform.cpp Viewport.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\glew-1.13.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt Transform.cpp
          Transform.cpp
-         Camera.cpp
-         Generating Code...
-         Compiling...
-         main.cpp
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(143): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(171): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(200): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(246): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-         Viewport.cpp
-         Canvas.cpp
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(143): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(171): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(200): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(246): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(59): warning C4316: 'EUMD_FlightSimulator::Components::Camera' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(150): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(207): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(232): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(275): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(375): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(403): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(407): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(408): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(416): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(417): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(425): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(426): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(427): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(436): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(437): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(438): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(447): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(448): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(449): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\canvas.cpp(450): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::Viewport' : object allocated on the heap may not be aligned 16
-         Application.cpp
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(143): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(171): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(200): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-     1>c:\users\c4po\documents\visual studio 2013\projects\flightsim\flightsim\objloader.h(246): warning C4316: 'EUMD_FlightSimulator::Core::Graphics::tagTRIANGLE' : object allocated on the heap may not be aligned 16
-         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\glew-1.13.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\c4po\Documents\Visual Studio 2013\Projects\FlightSim\Debug\FlightSim.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Camera.obj
@@ -66,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:25.80
+Time Elapsed 00:00:10.40
