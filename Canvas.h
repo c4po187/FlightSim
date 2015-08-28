@@ -24,7 +24,7 @@
 
 ///// OBJ TESTING /////
 #include "OBJLoader.h"
-#include "Shader.h"
+#include "ShaderProgram.h"
 ///////////////////////
 
 using namespace EUMD_FlightSimulator::Utilities;
@@ -136,6 +136,7 @@ namespace EUMD_FlightSimulator {
 			Camera_sptr mp_mainCamera;
 
 			///// Tests /////
+			ShaderProgram_sptr mp_shaderProg;
 			Shader_sptr mp_testVert, mp_testFrag;
 			/////////////////
 

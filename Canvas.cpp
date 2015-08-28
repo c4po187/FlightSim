@@ -98,6 +98,14 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 	///// TESTING /////
 	mp_testVert = Shader::createShaderFromSource("noob.vert", SHADER_TYPE::VERT, "Noob_Vertex_Shader");
 	mp_testFrag = Shader::createShaderFromSource("noob.frag", SHADER_TYPE::FRAG, "Noob_Fragment_Shader");
+
+	mp_shaderProg = ShaderProgram_sptr(new ShaderProgram("Noob_Test_Program"));
+	mp_shaderProg->attachShader(mp_testVert);
+	mp_shaderProg->attachShader(mp_testFrag);
+	if (mp_shaderProg->link()) {
+		//mp_shaderProg->activate();
+		std::cout << "Refraining from activating just for now...\n" << std::endl;
+	}
 	///////////////////
 
 	// Active scene shared amongst all viewports (if we have a scenemanager)

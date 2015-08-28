@@ -113,7 +113,11 @@ bool ShaderProgram::link() {
 	GLint linked = 0;
 	glGetProgramiv(m_handle, GL_LINK_STATUS, &linked);
 
+#if _DEBUG
+	std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
+#endif
 	if (linked == GL_FALSE) {
+#if _DEBUG
 		GLint maxLength = 0;
 		glGetProgramiv(m_handle, GL_INFO_LOG_LENGTH, &maxLength);
 		std::vector<GLchar> errorlog(maxLength);
@@ -125,15 +129,16 @@ bool ShaderProgram::link() {
 			std::cout << getTag() << ", ";
 		std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")...\n";
 		std::cout << &errorlog[0] << "\n" << std::endl;
-
+#endif
 		return false;
 	}
 	else {
+#if _DEBUG
 		std::cout << "LINK SUCCESS: ";
 		if (!getTag().empty())
 			std::cout << getTag() << ", ";
 		std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")\n" << std::endl;
-
+#endif
 		return true;
 	}
 }
@@ -146,10 +151,20 @@ bool ShaderProgram::activate() {
 
 	if (valid == GL_TRUE) {
 		glUseProgram(m_handle);
-
+#if _DEBUG
+		std::cout << "ACTIVATED: ";
+		if (!getTag().empty())
+			std::cout << getTag() << ", ";
+		std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")\n" << std::endl;
+#endif
 		return true;
 	}
-
+#if _DEBUG
+	std::cout << "ACTIVATION FAILURE: ";
+	if (!getTag().empty())
+		std::cout << getTag() << ", ";
+	std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")\n" << std::endl;
+#endif
 	return false;
 }
 
@@ -178,7 +193,7 @@ ShaderProgram_sptr ShaderProgram::restoreCache(const std::string& filename, cons
 	std::streampos szFile;
 	char* cache;
 
-	// Open the file (positioned ate the end (ate))
+	// Open the file (positioned at the end (ate))
 	std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
 	if (file.is_open()) {
 		// Allocate size for the cache
