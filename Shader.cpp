@@ -31,8 +31,14 @@ Shader_sptr Shader::createShaderFromSource(const std::string& filename, SHADER_T
 	if (!src) return nullptr;
 
 	std::ostringstream srcStream;
-	for (std::string line; std::getline(src, line);)
+	for (std::string line; std::getline(src, line);) {
+		// We need to add newline escape sequences at the end of every directive
+		size_t found = line.find('#');
+		if (found != std::string::npos) 
+			line.push_back('\n');
+
 		srcStream << line;
+	}
 	
 	std::string srcstr = srcStream.str();
 
@@ -50,13 +56,13 @@ Shader_sptr Shader::createShaderFromText(const std::string& text, SHADER_TYPE ty
 
 	GLenum typeflag = 0;
 	switch (type) {
-	case VERT: typeflag = GL_VERTEX_SHADER; break;
-	case TESS_CTRL: typeflag = GL_TESS_CONTROL_SHADER; break;
-	case TESS_EVAL: typeflag = GL_TESS_EVALUATION_SHADER; break;
-	case GEOM: typeflag = GL_GEOMETRY_SHADER; break;
-	case FRAG: typeflag = GL_FRAGMENT_SHADER; break;
-	case COMP: typeflag = GL_COMPUTE_SHADER; break;
-	default: break;
+		case VERT: typeflag = GL_VERTEX_SHADER; break;
+		case TESS_CTRL: typeflag = GL_TESS_CONTROL_SHADER; break;
+		case TESS_EVAL: typeflag = GL_TESS_EVALUATION_SHADER; break;
+		case GEOM: typeflag = GL_GEOMETRY_SHADER; break;
+		case FRAG: typeflag = GL_FRAGMENT_SHADER; break;
+		case COMP: typeflag = GL_COMPUTE_SHADER; break;
+		default: break;
 	}
 	if (typeflag == 0) return nullptr;
 
@@ -78,7 +84,7 @@ Shader_sptr Shader::createShaderFromText(const std::string& text, SHADER_TYPE ty
 		glGetShaderInfoLog(pshader->getHandle(), maxLength, &maxLength, &errorLog[0]);
 
 		// Print out the error & delete the shader object to prevent leaks
-		std::cout << &errorLog[0] << '\n' << std::endl;
+		std::cout << &errorLog[0] << std::flush;
 #endif
 		glDeleteShader(pshader->getHandle());
 

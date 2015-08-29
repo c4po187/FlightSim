@@ -13,6 +13,9 @@
 #pragma region Prerequisites
 
 #include "Resource.h"
+#include "Transform.h"
+
+using namespace EUMD_FlightSimulator::Components;
 
 #pragma endregion
 
@@ -39,11 +42,27 @@ namespace EUMD_FlightSimulator {
 				/* Implementations */
 
 				inline const std::string getType(TypeInfo tInfo_ex = DEFAULT_TYPE_INFO) override {
-					return (tInfo_ex) ? (Resource::getType() + "." + "Entity") : "Entity";
+					return (tInfo_ex) ? (Resource::getType() + ".Entity") : "Entity";
 				}
+
+				/* Accessors */
+
+				inline Transform_sptr getTransform() { return mp_transform; }
+
+				/* Modifiers */
+
+				inline void setTransform(Transform_sptr ptransform) { mp_transform = ptransform; }
+
+				/* Functions */
+
+				void update();
+				void render();
 
 			protected:
 
+				/* Members */
+
+				Transform_sptr mp_transform;	// Mandatory component
 		};
 	}
 }

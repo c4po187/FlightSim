@@ -96,16 +96,26 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 	glEnable(GL_DEPTH_TEST);
 
 	///// TESTING /////
+	mp_defaultVert = Shader::createShaderFromSource("default.vert", SHADER_TYPE::VERT, "Default_Vertex_Shader");
+	mp_defaultFrag = Shader::createShaderFromSource("diffuse.frag", SHADER_TYPE::FRAG, "Diffuse_Fragment_Shader");
+	mp_texDefaultFrag = Shader::createShaderFromSource(
+		"texture_diffuse.frag", SHADER_TYPE::FRAG, "Texture_Diffuse_Fragment_Shader");
+	mp_diffuseProg = ShaderProgram_sptr(new ShaderProgram("Diffuse_Program"));
+	mp_diffuseProg->attachShader(mp_defaultVert);
+	mp_diffuseProg->attachShader(mp_defaultFrag);
+	mp_diffuseProg->link();
+	mp_texDiffuseProg = ShaderProgram_sptr(new ShaderProgram("Texture_Diffuse_Program"));
+	mp_texDiffuseProg->attachShader(mp_defaultVert);
+	mp_texDiffuseProg->attachShader(mp_texDefaultFrag);
+	mp_texDiffuseProg->link();
+
 	mp_testVert = Shader::createShaderFromSource("noob.vert", SHADER_TYPE::VERT, "Noob_Vertex_Shader");
 	mp_testFrag = Shader::createShaderFromSource("noob.frag", SHADER_TYPE::FRAG, "Noob_Fragment_Shader");
-
 	mp_shaderProg = ShaderProgram_sptr(new ShaderProgram("Noob_Test_Program"));
 	mp_shaderProg->attachShader(mp_testVert);
 	mp_shaderProg->attachShader(mp_testFrag);
-	if (mp_shaderProg->link()) {
-		//mp_shaderProg->activate();
-		std::cout << "Refraining from activating just for now...\n" << std::endl;
-	}
+	mp_shaderProg->link();
+	
 	///////////////////
 
 	// Active scene shared amongst all viewports (if we have a scenemanager)

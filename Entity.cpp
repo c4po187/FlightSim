@@ -21,6 +21,12 @@ Entity::Entity() { ; }
 
 Entity::~Entity() { ; }
 
+/* Functions */
+
+void Entity::update() { ; }
+
+void Entity::render() { ; }
+
 #pragma endregion
 
 // END OF FILE
