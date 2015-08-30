@@ -9,7 +9,7 @@
 
 in vec2 uv;
 in vec4 vertex_position_world;
-in vec3 light_direction, normal;
+in vec3 light_direction;
 
 uniform sampler2D diffuse_texture, normalmap_texture;
 

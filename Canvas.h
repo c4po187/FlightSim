@@ -136,8 +136,10 @@ namespace EUMD_FlightSimulator {
 			Camera_sptr mp_mainCamera;
 
 			///// Tests /////
-			ShaderProgram_sptr mp_shaderProg, mp_diffuseProg, mp_texDiffuseProg;
-			Shader_sptr mp_testVert, mp_testFrag, mp_defaultVert, mp_defaultFrag, mp_texDefaultFrag;
+			ShaderProgram_sptr mp_shaderProg, mp_diffuseProg, mp_texDiffuseProg, mp_specProg, mp_texSpecProg,
+				mp_scProg, mp_skyProg;
+			Shader_sptr mp_testVert, mp_testFrag, mp_defaultVert, mp_defaultFrag, mp_specFrag, mp_texDefaultFrag,
+				mp_texSpecFrag, mp_scVert, mp_scFrag, mp_skyVert, mp_skyFrag;
 			/////////////////
 
 			/* Functions */

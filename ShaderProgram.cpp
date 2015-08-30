@@ -9,6 +9,7 @@
 
 #include "ShaderProgram.h"
 
+using namespace EUMD_FlightSimulator;
 using namespace EUMD_FlightSimulator::Components;
 
 #pragma endregion
@@ -19,10 +20,12 @@ using namespace EUMD_FlightSimulator::Components;
 
 ShaderProgram::ShaderProgram(const std::string& tag) {
 	m_tag = tag;
+	mb_linked = mb_valid = GL_FALSE;
 	m_handle = glCreateProgram();
 }
 
 ShaderProgram::ShaderProgram() {
+	mb_linked = mb_valid = GL_FALSE;
 	m_handle = glCreateProgram();
 }
 
@@ -110,13 +113,12 @@ bool ShaderProgram::detachShaders() {
 bool ShaderProgram::link() {
 	glLinkProgram(m_handle);
 
-	GLint linked = 0;
-	glGetProgramiv(m_handle, GL_LINK_STATUS, &linked);
+	glGetProgramiv(m_handle, GL_LINK_STATUS, &mb_linked);
 
 #if _DEBUG
 	std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 #endif
-	if (linked == GL_FALSE) {
+	if (mb_linked == GL_FALSE) {
 #if _DEBUG
 		GLint maxLength = 0;
 		glGetProgramiv(m_handle, GL_INFO_LOG_LENGTH, &maxLength);
@@ -145,11 +147,10 @@ bool ShaderProgram::link() {
 
 bool ShaderProgram::activate() {
 	// First validate the program, to guarantee its execution
-	GLint valid = 0;
 	glValidateProgram(m_handle);
-	glGetProgramiv(m_handle, GL_VALIDATE_STATUS, &valid);
+	glGetProgramiv(m_handle, GL_VALIDATE_STATUS, &mb_valid);
 
-	if (valid == GL_TRUE) {
+	if (mb_valid == GL_TRUE) {
 		glUseProgram(m_handle);
 #if _DEBUG
 		std::cout << "ACTIVATED: ";
@@ -213,8 +214,81 @@ ShaderProgram_sptr ShaderProgram::restoreCache(const std::string& filename, cons
 
 		return pshaderProg;
 	}
-
+	
 	return nullptr;
+}
+
+int ShaderProgram::getUniformLocation(const std::string& uniform) {
+	return (attachmentFrequency() <= 0) ? -1 : glGetUniformLocation(m_handle, uniform.c_str());
+}
+
+void ShaderProgram::sendUniform(const int& location, const float& f) {
+	glUniform1f(location, f);
+}
+
+void ShaderProgram::sendUniform(const int& location, const float& f0, const float& f1) {
+	glUniform2f(location, f0, f1);
+}
+
+void ShaderProgram::sendUniform(const int& location, const float& f0, const float& f1, const float& f2) {
+	glUniform3f(location, f0, f1, f2);
+}
+
+void ShaderProgram::sendUniform(
+	const int& location, const float& f0, const float& f1, const float& f2, const float& f3) {
+	glUniform4f(location, f0, f1, f2, f3);
+}
+
+void ShaderProgram::sendUniform(const int& location, const int& i) {
+	glUniform1i(location, i);
+}
+
+void ShaderProgram::sendUniform(const int& location, const int& i0, const int& i1) {
+	glUniform2i(location, i0, i1);
+}
+
+void ShaderProgram::sendUniform(const int& location, const int& i0, const int& i1, const int& i2) {
+	glUniform3i(location, i0, i1, i2);
+}
+
+void ShaderProgram::sendUniform(const int& location, const int& i0, const int& i1, const int& i2, const int& i3) {
+	glUniform4i(location, i0, i1, i2, i3);
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, const Vec2& v) {
+	glUniform2fv(location, count, glm::value_ptr(v));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, const Vec3& v) {
+	glUniform3fv(location, count, glm::value_ptr(v));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, const Vec4& v) {
+	glUniform4fv(location, count, glm::value_ptr(v));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, const iVec2& v) {
+	glUniform2iv(location, count, glm::value_ptr(v));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, const iVec3& v) {
+	glUniform3iv(location, count, glm::value_ptr(v));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, const iVec4& v) {
+	glUniform4iv(location, count, glm::value_ptr(v));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, bool transpose, const Matrix2& m) {
+	glUniformMatrix2fv(location, count, transpose, glm::value_ptr(m));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, bool transpose, const Matrix3& m) {
+	glUniformMatrix3fv(location, count, transpose, glm::value_ptr(m));
+}
+
+void ShaderProgram::sendUniform(const int& location, GLsizei count, bool transpose, const Matrix4& m) {
+	glUniformMatrix4fv(location, count, transpose, glm::value_ptr(m));
 }
 
 #pragma endregion

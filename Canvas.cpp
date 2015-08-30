@@ -95,11 +95,27 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	///// TESTING /////
+	///// TESTING ////////////////////////////////////////////////////////////////////////////////////////////////
+	mp_testVert = Shader::createShaderFromSource("noob.vert", SHADER_TYPE::VERT, "Noob_Vertex_Shader");
+	mp_testFrag = Shader::createShaderFromSource("noob.frag", SHADER_TYPE::FRAG, "Noob_Fragment_Shader");
 	mp_defaultVert = Shader::createShaderFromSource("default.vert", SHADER_TYPE::VERT, "Default_Vertex_Shader");
 	mp_defaultFrag = Shader::createShaderFromSource("diffuse.frag", SHADER_TYPE::FRAG, "Diffuse_Fragment_Shader");
 	mp_texDefaultFrag = Shader::createShaderFromSource(
 		"texture_diffuse.frag", SHADER_TYPE::FRAG, "Texture_Diffuse_Fragment_Shader");
+	mp_specFrag = Shader::createShaderFromSource("specular.frag", SHADER_TYPE::FRAG, "Specular_Fragment_Shader");
+	mp_texSpecFrag = Shader::createShaderFromSource(
+		"texture_specular.frag", SHADER_TYPE::FRAG, "Texture_Specular_Fragment_Shader");
+	mp_scVert = Shader::createShaderFromSource(
+		"simple_color.vert", SHADER_TYPE::VERT, "Simple_Color_Vertex_Shader");
+	mp_scFrag = Shader::createShaderFromSource(
+		"simple_color.frag", SHADER_TYPE::FRAG, "Simple_Color_Fragment_Shader");
+	mp_skyVert = Shader::createShaderFromSource("skybox.vert", SHADER_TYPE::VERT, "Skybox_Vertex_Shader");
+	mp_skyFrag = Shader::createShaderFromSource("skybox.frag", SHADER_TYPE::FRAG, "Skybox_Fragment_Shader");
+
+	mp_shaderProg = ShaderProgram_sptr(new ShaderProgram("Noob_Test_Program"));
+	mp_shaderProg->attachShader(mp_testVert);
+	mp_shaderProg->attachShader(mp_testFrag);
+	mp_shaderProg->link();
 	mp_diffuseProg = ShaderProgram_sptr(new ShaderProgram("Diffuse_Program"));
 	mp_diffuseProg->attachShader(mp_defaultVert);
 	mp_diffuseProg->attachShader(mp_defaultFrag);
@@ -108,15 +124,24 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 	mp_texDiffuseProg->attachShader(mp_defaultVert);
 	mp_texDiffuseProg->attachShader(mp_texDefaultFrag);
 	mp_texDiffuseProg->link();
+	mp_specProg = ShaderProgram_sptr(new ShaderProgram("Specular_Program"));
+	mp_specProg->attachShader(mp_defaultVert);
+	mp_specProg->attachShader(mp_specFrag);
+	mp_specProg->link();
+	mp_texSpecProg = ShaderProgram_sptr(new ShaderProgram("Texture_Specular_Program"));
+	mp_texSpecProg->attachShader(mp_defaultVert);
+	mp_texSpecProg->attachShader(mp_texSpecFrag);
+	mp_texSpecProg->link();
+	mp_scProg = ShaderProgram_sptr(new ShaderProgram("Simple_Color_Program"));
+	mp_scProg->attachShader(mp_scVert);
+	mp_scProg->attachShader(mp_scFrag);
+	mp_scProg->link();
+	mp_skyProg = ShaderProgram_sptr(new ShaderProgram("Skybox_Program"));
+	mp_skyProg->attachShader(mp_skyVert);
+	mp_skyProg->attachShader(mp_skyFrag);
+	mp_skyProg->link();
 
-	mp_testVert = Shader::createShaderFromSource("noob.vert", SHADER_TYPE::VERT, "Noob_Vertex_Shader");
-	mp_testFrag = Shader::createShaderFromSource("noob.frag", SHADER_TYPE::FRAG, "Noob_Fragment_Shader");
-	mp_shaderProg = ShaderProgram_sptr(new ShaderProgram("Noob_Test_Program"));
-	mp_shaderProg->attachShader(mp_testVert);
-	mp_shaderProg->attachShader(mp_testFrag);
-	mp_shaderProg->link();
-	
-	///////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Active scene shared amongst all viewports (if we have a scenemanager)
 	if (mp_sceneManager)

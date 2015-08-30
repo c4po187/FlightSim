@@ -4,7 +4,7 @@
  * Diffuse Fragment Shader
  *
  * Rici Underwood © 2015
- * c4po198@gmail.com
+ * c4po187@gmail.com
  */
 
 in vec4 vertex_position_world, rgba;

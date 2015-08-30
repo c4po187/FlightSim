@@ -36,6 +36,9 @@ namespace EUMD_FlightSimulator {
 		typedef glm::vec2 Vec2;
 		typedef glm::vec3 Vec3;
 		typedef glm::vec4 Vec4;
+		typedef glm::ivec2 iVec2;
+		typedef glm::ivec3 iVec3;
+		typedef glm::ivec4 iVec4;
 		typedef glm::mat2 Matrix2;
 		typedef glm::mat3 Matrix3;
 		typedef glm::mat4 Matrix4;

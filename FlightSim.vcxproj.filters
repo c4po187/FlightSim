@@ -125,6 +125,9 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="test.xml" />
@@ -136,5 +139,11 @@
     <None Include="default.vert" />
     <None Include="diffuse.frag" />
     <None Include="texture_diffuse.frag" />
+    <None Include="specular.frag" />
+    <None Include="texture_specular.frag" />
+    <None Include="simple_color.vert" />
+    <None Include="simple_color.frag" />
+    <None Include="skybox.vert" />
+    <None Include="skybox.frag" />
   </ItemGroup>
 </Project>

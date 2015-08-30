@@ -97,6 +97,7 @@
     <ClInclude Include="EUMD_Math.h" />
     <ClInclude Include="IApplicationObject.h" />
     <ClInclude Include="Canvas.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="LUT.h" />
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="Resource.h" />
@@ -122,7 +123,13 @@
     <None Include="noob.vert">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </None>
+    <None Include="simple_color.frag" />
+    <None Include="simple_color.vert" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
+    <None Include="specular.frag" />
     <None Include="texture_diffuse.frag" />
+    <None Include="texture_specular.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
