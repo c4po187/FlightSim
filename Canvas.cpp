@@ -141,6 +141,9 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 	mp_skyProg->attachShader(mp_skyFrag);
 	mp_skyProg->link();
 
+	GLenum binFormat;
+	mp_skyProg->cacheProgram("sp.bin", binFormat);
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Active scene shared amongst all viewports (if we have a scenemanager)

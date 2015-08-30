@@ -127,9 +127,7 @@ bool ShaderProgram::link() {
 
 		glDeleteProgram(m_handle);
 		std::cout << "LINK ERROR: ";
-		if (!getTag().empty())
-			std::cout << getTag() << ", ";
-		std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")...\n";
+		details();
 		std::cout << &errorlog[0] << "\n" << std::endl;
 #endif
 		return false;
@@ -137,9 +135,7 @@ bool ShaderProgram::link() {
 	else {
 #if _DEBUG
 		std::cout << "LINK SUCCESS: ";
-		if (!getTag().empty())
-			std::cout << getTag() << ", ";
-		std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")\n" << std::endl;
+		details();
 #endif
 		return true;
 	}
@@ -154,19 +150,21 @@ bool ShaderProgram::activate() {
 		glUseProgram(m_handle);
 #if _DEBUG
 		std::cout << "ACTIVATED: ";
-		if (!getTag().empty())
-			std::cout << getTag() << ", ";
-		std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")\n" << std::endl;
+		details();
 #endif
 		return true;
 	}
 #if _DEBUG
 	std::cout << "ACTIVATION FAILURE: ";
+	details();
+#endif
+	return false;
+}
+
+void ShaderProgram::details() {
 	if (!getTag().empty())
 		std::cout << getTag() << ", ";
 	std::cout << "(" << getType(EXTENDED_TYPE_INFO) << ")\n" << std::endl;
-#endif
-	return false;
 }
 
 void ShaderProgram::cacheProgram(const std::string& filename, GLenum& binFormat) {
@@ -180,7 +178,7 @@ void ShaderProgram::cacheProgram(const std::string& filename, GLenum& binFormat)
 
 		// Write to file
 		std::ofstream bin(filename, std::ios::out | std::ios::binary);
-		bin.write(cache, sizeof(cache));
+		bin.write(cache, len * sizeof(char));
 		bin.close();
 
 		delete[] cache;
@@ -289,6 +287,22 @@ void ShaderProgram::sendUniform(const int& location, GLsizei count, bool transpo
 
 void ShaderProgram::sendUniform(const int& location, GLsizei count, bool transpose, const Matrix4& m) {
 	glUniformMatrix4fv(location, count, transpose, glm::value_ptr(m));
+}
+
+// Ensure to delete the raw pointer this function returns after use!
+float* ShaderProgram::getUniformf(const int& location) {
+	float* f = NULL;
+	glGetUniformfv(m_handle, location, f);
+
+	return (!f) ? nullptr : f;
+}
+
+// Ensure to delete the raw pointer this function returns after use!
+int* ShaderProgram::getUniformi(const int& location) {
+	int* i = NULL;
+	glGetUniformiv(m_handle, location, i);
+
+	return (!i) ? nullptr : i;
 }
 
 #pragma endregion

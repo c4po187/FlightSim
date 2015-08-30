@@ -81,6 +81,8 @@ namespace EUMD_FlightSimulator {
 				void sendUniform(const int& location, GLsizei count, bool transpose, const Matrix2& m);
 				void sendUniform(const int& location, GLsizei count, bool transpose, const Matrix3& m);
 				void sendUniform(const int& location, GLsizei count, bool transpose, const Matrix4& m);
+				float* getUniformf(const int& location);
+				int* getUniformi(const int& location);
 
 			private:
 
@@ -91,6 +93,7 @@ namespace EUMD_FlightSimulator {
 
 				/* Functions */
 
+				void details();
 				void detachShader(PComponents::iterator& pit);
 		};
 	}
