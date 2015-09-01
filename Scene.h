@@ -13,7 +13,13 @@
 #pragma region Prerequisites
 
 #include "Resource.h"
-#include "Entity.h"
+#include "Vertex.h"
+#include "Pair.h"
+#include "Camera.h"
+#include "ShaderProgram.h"
+
+using namespace EUMD_FlightSimulator::Components;
+using namespace EUMD_FlightSimulator::Core::Graphics;
 
 #pragma endregion
 
@@ -22,6 +28,8 @@
 namespace EUMD_FlightSimulator {
 
 	namespace Resources {
+
+		#define GRID_COLOR Vec3(.0f, .85f, .25f)
 
 		class Scene;
 
@@ -33,14 +41,24 @@ namespace EUMD_FlightSimulator {
 
 				/* Ctor, Dtor */
 
+				Scene(const std::string& tag, Camera_sptr pcamera, bool showGrid);
 				Scene(const std::string& tag, bool active = true);
 				Scene();
 				~Scene();
+
+				/* Accessors */
+
+				inline const bool& isGridVisible() const { return mb_showGrid; }
+
+				/* Modifiers */
+
+				inline void gridVisibility(const bool& visible) { mb_showGrid = visible; }
 
 				/* Functions */
 
 				void update();
 				void render();
+				void renderGrid();
 
 				/* Implementations */
 
@@ -52,7 +70,12 @@ namespace EUMD_FlightSimulator {
 
 				/* Members */
 
-				PEntities mv_pEntities;
+				bool mb_showGrid;
+				unsigned int m_grid_vao, m_grid_vbo;
+
+				/* Functions */
+
+				void initializeGrid();
 		};
 	}
 }

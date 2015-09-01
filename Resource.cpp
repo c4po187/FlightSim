@@ -33,41 +33,29 @@ bool Resource::operator == (const Resource& resource) {
 
 /* Functions */
 
+bool Resource::checkValidity(const char* type_id) {
+	bool validity = false;
+	std::string tname_ex(type_id);
+	size_t dc_pos = tname_ex.find_last_of(':');
+	std::string tname = tname_ex.substr(dc_pos + 1);
+
+	// First check if the type of component is valid
+	for (unsigned i = 0; i < SZ_SUBCOMPONENTS; ++i) {
+		if (Config::SubComponents[i] == tname) {
+			validity = true;
+			break;
+		}
+	}
+
+	return validity;
+}
+
 void Resource::addResource(Resource_sptr presource) {
 	mv_pChildResources.push_back(presource);
 }
 
 void Resource::addComponent(Component_sptr pcomponent) {
 	mv_pComponents.push_back(pcomponent);
-}
-
-template <class _TyComponent>
-std::tr1::shared_ptr<_TyComponent> Resource::getComponent() {
-	bool validType = false;
-	
-	// First check if the type of component is valid
-	for (unsigned i = 0; i < SZ_SUBCOMPONENTS; ++i) {
-		if (Config::SubComponents[i].c_str() == typeid(_TyComponent).name()) {
-			validType = true;
-			break;
-		}
-	}
-	
-	if (!validType)
-		throw EX_INV_COMP_TYPE;
-
-	Component_sptr component = NULL;
-
-	// Now check if the component exists in the vector
-	for (auto c : mv_pComponents) {
-		if (typeid(_TyComponent).name() == c->getType().c_str()) {
-			component = c;
-			break;
-		}
-	}
-
-	// Return if found
-	return (component) ? dynamic_cast<std::tr1::shared_ptr<_TyComponent>>(component) : nullptr; 
 }
 
 void Resource::clean() {

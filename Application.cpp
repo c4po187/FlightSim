@@ -22,7 +22,7 @@ Application_sptr Application::sp_app = NULL;
 /* Ctor, Dtor */
 
 Application::Application() {
-	mp_rscFactory = ResourceFactory_sptr(new ResourceFactory());
+	//mp_rscFactory = ResourceFactory_sptr(new ResourceFactory());
 	m_stickyKeys = { sizeof(STICKYKEYS), 0 };
 	mb_kill = mb_ranOnce = false;
 	ShowCursor(false);
@@ -144,7 +144,7 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 				///// Camera Testing /////
 				case 'W':	// Cam Forward
 					sp_app->getCanvas()->getMainCamera()->getTransform()->setPosition(
-						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() - Vec3(.0f, .0f, .05f));
+						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() - Vec3(.0f, .05f, .0f));
 					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
 					break;
 				case 'A':	// Cam Strafe Left
@@ -154,7 +154,7 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 					break;
 				case 'S':	// Cam Backwards
 					sp_app->getCanvas()->getMainCamera()->getTransform()->setPosition(
-						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() + Vec3(.0f, .0f, .05f));
+						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() + Vec3(.0f, .05f, .0f));
 					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
 					break;
 				case 'D':	// Cam Strafe Right

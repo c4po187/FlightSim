@@ -98,11 +98,9 @@ bool SceneManager::exists(const std::string& tag) {
 PScenes::iterator SceneManager::getSceneIteratorFromTag(const std::string& tag) {
 	if (!exists(tag))
 		throw EX_INV_TAG;
-	
-	static std::string _tag = tag;
 
 	return std::find_if(mv_pScenes.begin(), mv_pScenes.end(),
-		[](Scene_sptr s)-> bool { return s->getTag() == _tag; });
+		[&tag](Scene_sptr s)-> bool { return s->getTag() == tag; });
 }
 
 void SceneManager::addScene(Scene_sptr pscene) {
@@ -132,21 +130,17 @@ bool SceneManager::removeScene(const std::string& tag) {
 }
 
 Scene_sptr SceneManager::findScene(const unsigned int& id) {
-	static unsigned int _id = id;
-
 	PScenes::iterator sit = std::find_if(
 		mv_pScenes.begin(), mv_pScenes.end(),
-		[](Scene_sptr s)-> bool { return s->getID() == _id; });
+		[&id](Scene_sptr s)-> bool { return s->getID() == id; });
 
 	return (sit != mv_pScenes.end()) ? (*sit) : nullptr;
 }
 
 Scene_sptr SceneManager::findScene(const std::string& tag) {
-	static std::string _tag = tag;
-
 	PScenes::iterator sit = std::find_if(
 		mv_pScenes.begin(), mv_pScenes.end(),
-		[](Scene_sptr s)-> bool { return s->getTag() == _tag; });
+		[&tag](Scene_sptr s)-> bool { return s->getTag() == tag; });
 
 	return (sit != mv_pScenes.end()) ? (*sit) : nullptr;
 }
@@ -189,6 +183,13 @@ void SceneManager::activateScene(const std::string& tag) {
 
 	m_index = std::distance(mv_pScenes.begin(), getSceneIteratorFromTag(tag));
 	invokeScene();
+}
+
+void SceneManager::activateScene(const int& index) {
+	if (index >= 0 || index < mv_pScenes.size()) {
+		m_index = index;
+		invokeScene();
+	}
 }
 
 void SceneManager::update() {

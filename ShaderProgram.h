@@ -62,6 +62,7 @@ namespace EUMD_FlightSimulator {
 				void cacheProgram(const std::string& filename, GLenum& binFormat);
 				static ShaderProgram_sptr restoreCache(const std::string& filename, const GLenum& binFormat);
 				int getUniformLocation(const std::string& uniform);
+				int getAttributeLocation(const std::string& attrib);
 				void sendUniform(const int& location, const float& f);
 				void sendUniform(const int& location, const float& f0, const float& f1);
 				void sendUniform(const int& location, const float& f0, const float& f1, const float& f2);

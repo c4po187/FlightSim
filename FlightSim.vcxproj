@@ -100,6 +100,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LUT.h" />
     <ClInclude Include="OBJLoader.h" />
+    <ClInclude Include="Pair.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceFactory.h" />
     <ClInclude Include="Scene.h" />
@@ -116,7 +117,6 @@
     <Xml Include="test.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="default.vert" />
     <None Include="diffuse.frag" />
     <None Include="noob.frag" />
@@ -128,6 +128,8 @@
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />
     <None Include="specular.frag" />
+    <None Include="test.frag" />
+    <None Include="test.vert" />
     <None Include="texture_diffuse.frag" />
     <None Include="texture_specular.frag" />
   </ItemGroup>

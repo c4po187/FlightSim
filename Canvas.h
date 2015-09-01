@@ -22,11 +22,6 @@
 #include "SceneManager.h"
 #include "Camera.h"
 
-///// OBJ TESTING /////
-#include "OBJLoader.h"
-#include "ShaderProgram.h"
-///////////////////////
-
 using namespace EUMD_FlightSimulator::Utilities;
 using namespace EUMD_FlightSimulator::Components;
 
@@ -134,13 +129,6 @@ namespace EUMD_FlightSimulator {
 			bool mb_shareScene;
 			U16 m_layoutFlag;
 			Camera_sptr mp_mainCamera;
-
-			///// Tests /////
-			ShaderProgram_sptr mp_shaderProg, mp_diffuseProg, mp_texDiffuseProg, mp_specProg, mp_texSpecProg,
-				mp_scProg, mp_skyProg;
-			Shader_sptr mp_testVert, mp_testFrag, mp_defaultVert, mp_defaultFrag, mp_specFrag, mp_texDefaultFrag,
-				mp_texSpecFrag, mp_scVert, mp_scFrag, mp_skyVert, mp_skyFrag;
-			/////////////////
 
 			/* Functions */
 

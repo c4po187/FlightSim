@@ -61,15 +61,6 @@ void ResourceFactory::setupInitialResources() {
 	}
 
 	//////////////////////////
-
-	///// Factory Test /////
-
-	addResource(Scene_sptr(new Scene("Mutherfucker")));
-	addResource(Scene_sptr(new Scene("Bitches")));
-	addResource(Scene_sptr(new Scene("Be")));
-	addResource(Scene_sptr(new Scene("Trippin")));
-
-	////////////////////////
 }
 
 void ResourceFactory::setResourceId(Resource_sptr pResource) {
@@ -94,21 +85,17 @@ bool ResourceFactory::removeResourceAt(const int& index) {
 }
 
 Resource_sptr ResourceFactory::findResource(const int& id) {
-	static int _id = id;
-
 	PResources::iterator prit = std::find_if(
 		mv_pResources.begin(), mv_pResources.end(), 
-		[](Resource_sptr pr)-> bool { return pr->getID() == _id; });
+		[&id](Resource_sptr pr)-> bool { return pr->getID() == id; });
 	
 	return (prit != mv_pResources.end()) ? (*prit) : nullptr;
 }
 
 Resource_sptr ResourceFactory::findResource(const std::string& tag) {
-	static std::string _tag = tag;
-
 	PResources::iterator prit = std::find_if(
 		mv_pResources.begin(), mv_pResources.end(),
-		[](Resource_sptr pr)-> bool { return pr->getTag() == _tag; });
+		[&tag](Resource_sptr pr)-> bool { return pr->getTag() == tag; });
 
 	return (prit != mv_pResources.end()) ? (*prit) : nullptr;
 }

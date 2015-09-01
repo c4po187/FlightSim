@@ -73,6 +73,7 @@ namespace EUMD_FlightSimulator {
 				bool previousScene();
 				bool nextScene();
 				void activateScene(const std::string& tag);
+				void activateScene(const int& index);
 				void update();
 
 			private:

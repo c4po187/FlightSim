@@ -68,13 +68,11 @@ void ShaderProgram::detachShader(PComponents::iterator& pit) {
 }
 
 void ShaderProgram::detachShader(const HSHADER& handle) {
-	static HSHADER _handle = handle;
-
 	if (!mv_pChildComponents.empty()) {
 		PComponents::iterator pit = std::find_if(
 			mv_pChildComponents.begin(), mv_pChildComponents.end(),
-			[](Component_sptr c)-> bool { 
-			return std::dynamic_pointer_cast<Shader>(c)->getHandle() == _handle; });
+			[&handle](Component_sptr c)-> bool { 
+			return std::dynamic_pointer_cast<Shader>(c)->getHandle() == handle; });
 
 		if (pit != mv_pChildComponents.end())
 			detachShader(pit);
@@ -82,12 +80,10 @@ void ShaderProgram::detachShader(const HSHADER& handle) {
 }
 
 void ShaderProgram::detachShader(const std::string& tag) {
-	static std::string _tag = tag;
-
 	if (!mv_pChildComponents.empty()) {
 		PComponents::iterator pit = std::find_if(
 			mv_pChildComponents.begin(), mv_pChildComponents.end(),
-			[](Component_sptr c)-> bool { return c->getTag() == _tag; });
+			[&tag](Component_sptr c)-> bool { return c->getTag() == tag; });
 
 		if (pit != mv_pChildComponents.end())
 			detachShader(pit);
@@ -218,6 +214,10 @@ ShaderProgram_sptr ShaderProgram::restoreCache(const std::string& filename, cons
 
 int ShaderProgram::getUniformLocation(const std::string& uniform) {
 	return (attachmentFrequency() <= 0) ? -1 : glGetUniformLocation(m_handle, uniform.c_str());
+}
+
+int ShaderProgram::getAttributeLocation(const std::string& attrib) {
+	return (attachmentFrequency() <= 0) ? -1 : glGetAttribLocation(m_handle, attrib.c_str());
 }
 
 void ShaderProgram::sendUniform(const int& location, const float& f) {

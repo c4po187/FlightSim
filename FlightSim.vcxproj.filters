@@ -128,12 +128,14 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="test.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="noob.vert" />
     <None Include="noob.frag" />
     <None Include="default.vert" />
@@ -145,5 +147,7 @@
     <None Include="simple_color.frag" />
     <None Include="skybox.vert" />
     <None Include="skybox.frag" />
+    <None Include="test.vert" />
+    <None Include="test.frag" />
   </ItemGroup>
 </Project>

@@ -64,8 +64,39 @@ namespace EUMD_FlightSimulator {
 
 				void addResource(Resource_sptr presource);
 				void addComponent(Component_sptr pcomponent);
+
 				template <class _TyComponent>
-				std::tr1::shared_ptr<_TyComponent> getComponent();
+				inline std::tr1::shared_ptr<_TyComponent> getComponent() {
+					if (!checkValidity(typeid(_TyComponent).name()))
+						return nullptr;
+
+					Component_sptr component = NULL;
+
+					// Now check if the component exists in the vector
+					for (auto c : mv_pComponents) {
+						if (tname == c->getType()) {
+							component = c;
+							break;
+						}
+					}
+					
+					// Return if found
+					return (component) ? std::dynamic_pointer_cast<_TyComponent>(component) : nullptr;
+				}
+
+				template <class _TyComponent>
+				inline std::tr1::shared_ptr<_TyComponent> getComponent(const std::string& tag) {
+					if (!checkValidity(typeid(_TyComponent).name())) return nullptr;
+
+					// Now see if we have a component with the specified tag
+					PComponents::iterator pcit = std::find_if(
+						mv_pComponents.begin(), mv_pComponents.end(),
+						[&tag](Component_sptr c)-> bool { return c->getTag() == tag; });
+
+					// Cast if we can and return
+					return (std::dynamic_pointer_cast<_TyComponent>(*pcit)) ?
+						std::dynamic_pointer_cast<_TyComponent>(*pcit) : nullptr;
+				}
 
 				/* Implementations */
 
@@ -83,6 +114,10 @@ namespace EUMD_FlightSimulator {
 				bool mb_active;
 				PResources mv_pChildResources;
 				PComponents mv_pComponents;
+
+				/* Functions */
+
+				bool checkValidity(const char* type_id);
 		};
 	}
 }

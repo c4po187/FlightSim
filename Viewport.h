@@ -122,12 +122,6 @@ namespace EUMD_FlightSimulator {
 					bool mb_active, mb_visible, mb_border;
 					Camera_sptr mp_viewCam;
 
-					///// Tests /////
-
-					float m_rotZ;
-
-					/////////////////
-
 					/* Functions */
 
 					void initialize();
