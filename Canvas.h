@@ -82,6 +82,8 @@ namespace EUMD_FlightSimulator {
 			inline const bool hasViewports() const { return !(mv_pViewports.empty()); }
 			inline SceneManager_sptr getSceneManager() { return mp_sceneManager; }
 			inline Camera_sptr getMainCamera() { return mp_mainCamera; }
+			inline const int& getMidX() const { return m_midx; }
+			inline const int& getMidY() const { return m_midy; }
 
 			/* Modifiers */
 
@@ -91,6 +93,9 @@ namespace EUMD_FlightSimulator {
 			}
 			inline void setSceneManager(SceneManager_sptr sm) { mp_sceneManager = sm; }
 			inline void setMainCamera(Camera_sptr pcamera) { mp_mainCamera = pcamera; }
+			inline void setMidX(const int& x) { m_midx = x; }
+			inline void setMidY(const int& y) { m_midy = y; }
+			inline void setCursor(const bool b) { mb_setCursor = b; }
 
 			/* Functions */
 
@@ -129,6 +134,8 @@ namespace EUMD_FlightSimulator {
 			bool mb_shareScene;
 			U16 m_layoutFlag;
 			Camera_sptr mp_mainCamera;
+			int m_midx, m_midy;
+			bool mb_setCursor;
 
 			/* Functions */
 

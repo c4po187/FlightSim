@@ -60,6 +60,9 @@ void Canvas::initialize(const HINSTANCE& hInstance) {
 		Vec3(), Vec3(.0f, 1.0f, .0f), Vec3(.0f, .0f, -1.0f),
 		45.0f, static_cast<float>(m_width / m_height), .1f, 100.0f, "Default_Camera"));
 	
+	m_midx = m_midy = 0;
+	mb_setCursor = false;
+
 	m_hwnd = CreateWindowEx(
 		WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, 
 		"Flight Simulator", 
@@ -334,6 +337,14 @@ void Canvas::resize(int w, int h) {
 void Canvas::update() {
 	if (mp_sceneManager)
 		mp_sceneManager->update();
+
+	if (mp_mainCamera) {
+		//mp_mainCamera->getTransform()->setYaw(.0f);
+		/*if (mb_setCursor) {
+			SetCursorPos(m_midx, m_midy);
+			mb_setCursor = false;
+		}*/
+	}
 
 	if (hasViewports()) {
 		for (auto v : mv_pViewports)

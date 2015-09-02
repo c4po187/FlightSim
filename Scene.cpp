@@ -45,7 +45,7 @@ void Scene::initializeGrid() {
 	float min = -max;
 	min += (max * .25f);
 	max -= (max * .25f);
-	float f = min, inc = 3.0f;
+	float f = min, inc = 3.06125f;
 
 	for (unsigned i = 0; i < 200; i += 4) {
 		verts[i] = { Vec3(min, .0f, f), GRID_COLOR };

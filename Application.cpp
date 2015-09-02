@@ -25,7 +25,6 @@ Application::Application() {
 	//mp_rscFactory = ResourceFactory_sptr(new ResourceFactory());
 	m_stickyKeys = { sizeof(STICKYKEYS), 0 };
 	mb_kill = mb_ranOnce = false;
-	ShowCursor(false);
 }
 
 Application::~Application() { 
@@ -90,11 +89,12 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 	float xoffset = .0f, yoffset = .0f;
 
 	RECT view;
-	if (GetClientRect(hwnd, &view)) {
-		sp_app->m_midx = view.right / 2;
-		sp_app->m_midy = view.bottom / 2;
+	if (sp_app->getCanvas()) {
+		if (GetClientRect(hwnd, &view)) {
+			sp_app->getCanvas()->setMidX(view.right / 2);
+			sp_app->getCanvas()->setMidY(view.bottom / 2);
+		}
 	}
-	sp_app->mb_setCursor = false;
 	//////////////////////////
 
 #endif /* MCT */
@@ -106,28 +106,24 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 #if MCT	
 		///// Camera Testing /////
 		case WM_MOUSEMOVE:
-			mouse.x = GET_X_LPARAM(lparam);
-			mouse.y = GET_Y_LPARAM(lparam);
+			if (sp_app->getCanvas()) {
+				GetCursorPos(&mouse);
 
-			xoffset = static_cast<float>(mouse.x - sp_app->m_lastMouse.x);
-			yoffset = static_cast<float>(mouse.y - sp_app->m_lastMouse.y);
+				if (!sp_app->mb_ranOnce) {
+					sp_app->getCanvas()->setMidX(mouse.x);
+					sp_app->getCanvas()->setMidY(mouse.y);
+					sp_app->mb_ranOnce = true;
+				}
 
-			sp_app->getCanvas()->getMainCamera()->setYaw(
-				sp_app->getCanvas()->getMainCamera()->getYaw() + (xoffset * .000001f));
-			sp_app->getCanvas()->getMainCamera()->setPitch(
-				sp_app->getCanvas()->getMainCamera()->getPitch() + (yoffset * .000001f));
-			sp_app->getCanvas()->getMainCamera()->orient();
-			sp_app->getCanvas()->getMainCamera()->updateViewMatrix(true);
+				xoffset = (mouse.x - sp_app->getCanvas()->getMidX()) * .0005f;
+				yoffset = (mouse.y - sp_app->getCanvas()->getMidY()) * .0005f;
 
-			sp_app->m_lastMouse = mouse;
-
-			if (mouse.x > view.left && mouse.x < view.right && 
-				mouse.y > view.top && mouse.y < view.bottom) {
-				mouse.x = sp_app->m_midx;
-				mouse.y = sp_app->m_midy;
-				sp_app->m_lastMouse = mouse;
-				sp_app->mb_setCursor = true;
+				sp_app->getCanvas()->getMainCamera()->getTransform()->setYaw(xoffset);
+				sp_app->getCanvas()->getMainCamera()->getTransform()->setPitch(yoffset);
+				sp_app->getCanvas()->getMainCamera()->orient();
+				sp_app->getCanvas()->getMainCamera()->updateViewMatrix(true);
 			}
+			//sp_app->getCanvas()->setCursor(true);
 
 			break;
 		//////////////////////////
@@ -144,22 +140,22 @@ LRESULT CALLBACK Application::wndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 				///// Camera Testing /////
 				case 'W':	// Cam Forward
 					sp_app->getCanvas()->getMainCamera()->getTransform()->setPosition(
-						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() - Vec3(.0f, .05f, .0f));
+						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() - Vec3(.0f, .0f, .5f));
 					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
 					break;
 				case 'A':	// Cam Strafe Left
 					sp_app->getCanvas()->getMainCamera()->getTransform()->setPosition(
-						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() - Vec3(.05f, .0f, .0f));
+						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() - Vec3(.5f, .0f, .0f));
 					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
 					break;
 				case 'S':	// Cam Backwards
 					sp_app->getCanvas()->getMainCamera()->getTransform()->setPosition(
-						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() + Vec3(.0f, .05f, .0f));
+						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() + Vec3(.0f, .0f, .5f));
 					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
 					break;
 				case 'D':	// Cam Strafe Right
 					sp_app->getCanvas()->getMainCamera()->getTransform()->setPosition(
-						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() + Vec3(.05f, .0f, .0f));
+						sp_app->getCanvas()->getMainCamera()->getTransform()->getPosition() + Vec3(.5f, .0f, .0f));
 					sp_app->getCanvas()->getMainCamera()->updateViewMatrix();
 					break;
 				//////////////////////////
@@ -203,8 +199,6 @@ int Application::run() {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-			if (mb_setCursor)
-				SetCursorPos(m_midx, m_midy);
 		}
 	}
 

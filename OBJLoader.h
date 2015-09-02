@@ -114,137 +114,104 @@ namespace EUMD_FlightSimulator {
 						std::istringstream face_stream(_s);
 						std::string f;
 
+						Vertex tri[3];
+						Triangle triangle;
+
 						// Check against all the regular expresssions
 						if (std::regex_match(s, v)) {
 							if (face_stream >> f >> vi1 >> vi2 >> vi3) {
-								triangles.push_back(Triangle_sptr(
-									new Triangle {
-										Vertex {
-											positions[vi1 - 1],
-											Vec4(),
-											Vec4(),
-											Vec4(),
-											Vec2()
-										},
-										Vertex {
-											positions[vi2 - 1],
-											Vec4(),
-											Vec4(),
-											Vec4(),
-											Vec2()
-										},
-										Vertex {
-											positions[vi3 - 1],
-											Vec4(),
-											Vec4(),
-											Vec4(),
-											Vec2()
-										}
-									})
-								);
+								tri[0].position = positions[vi1 - 1];
+								tri[1].position = positions[vi2 - 1];
+								tri[2].position = positions[vi3 - 1];
+
+								for (unsigned i = 0; i < 3; ++i) {
+									tri[i].normal = Vec4();
+									tri[i].tangent = Vec4();
+									tri[i].color = Vec4();
+									tri[i].uv = Vec2();
+
+									triangle.points[i] = tri[i];
+								}
+								
+								triangles.push_back(Triangle_sptr(&triangle));
 							}
 						} else if (std::regex_match(s, vt)) {
 							if (face_stream >> f >> vi1 >> ti1 >> vi2 >> ti2 >> vi3 >> ti3) {
-								triangles.push_back(Triangle_sptr(
-									new Triangle {
-										Vertex {
-											positions[vi1 - 1],
-											Vec4(),
-											Vec4(),
-											Vec4(),
-											uvs[ti1 - 1]
-										},
-										Vertex {
-											positions[vi2 - 1],
-											Vec4(),
-											Vec4(),
-											Vec4(),
-											uvs[ti2 - 1]
-										},
-										Vertex {
-											positions[vi3 - 1],
-											Vec4(),
-											Vec4(),
-											Vec4(),
-											uvs[ti3 - 1]
-										}
-									})
-								);
+								tri[0].position = positions[vi1 - 1];
+								tri[1].position = positions[vi2 - 1];
+								tri[2].position = positions[vi3 - 1];
+								tri[0].uv = uvs[ti1 - 1];
+								tri[1].uv = uvs[ti2 - 1];
+								tri[2].uv = uvs[ti3 - 1];
+
+								for (unsigned i = 0; i < 3; ++i) {
+									tri[i].normal = Vec4();
+									tri[i].tangent = Vec4();
+									tri[i].color = Vec4();
+
+									triangle.points[i] = tri[i];
+								}
+
+								triangles.push_back(Triangle_sptr(&triangle));
 							}
 						} else if (std::regex_match(s, vtn)) {
 							if (face_stream >> f >> vi1 >> ti1 >> ni1 >>
 								vi2 >> ti2 >> ni2 >> vi3 >> ti3 >> ni3) {
-								triangles.push_back(Triangle_sptr(
-									new Triangle {
-										Vertex {
-											positions[vi1 - 1],
-											normals[ni1 - 1],
-											Vec4(),
-											Vec4(),
-											uvs[ti1 - 1]
-										},
-										Vertex {
-											positions[vi2 - 1],
-											normals[ni2 - 1],
-											Vec4(),
-											Vec4(),
-											uvs[ti2 - 1]
-										},
-										Vertex {
-											positions[vi3 - 1],
-											normals[ni3 - 1],
-											Vec4(),
-											Vec4(),
-											uvs[ti3 - 1]
-										}
-									})
-								);
+								tri[0].position = positions[vi1 - 1];
+								tri[1].position = positions[vi2 - 1];
+								tri[2].position = positions[vi3 - 1];
+								tri[0].normal = normals[ni1 - 1];
+								tri[1].normal = normals[ni2 - 1];
+								tri[2].normal = normals[ni3 - 1];
+								tri[0].uv = uvs[ti1 - 1];
+								tri[1].uv = uvs[ti2 - 1];
+								tri[2].uv = uvs[ti3 - 1];
+
+								for (unsigned i = 0; i < 3; ++i) {
+									tri[i].tangent = Vec4();
+									tri[i].color = Vec4();
+
+									triangle.points[i] = tri[i];
+								}
+
+								triangles.push_back(Triangle_sptr(&triangle));
+
 
 								// Get current index
 								unsigned int i = (triangles.size() - 1);
-
+								
 								// Calculate position and UV deltas
-								Vec4 dv1 = triangles[i]->p1.position - triangles[i]->p0.position;
-								Vec4 dv2 = triangles[i]->p2.position - triangles[i]->p0.position;
-								Vec2 du1 = triangles[i]->p1.uv - triangles[i]->p0.uv;
-								Vec2 du2 = triangles[i]->p2.uv - triangles[i]->p0.uv;
+								Vec4 dv1 = triangles[i]->points[1].position - triangles[i]->points[0].position;
+								Vec4 dv2 = triangles[i]->points[2].position - triangles[i]->points[0].position;
+								Vec2 du1 = triangles[i]->points[1].uv - triangles[i]->points[0].uv;
+								Vec2 du2 = triangles[i]->points[2].uv - triangles[i]->points[0].uv;
 
 								// Calculate the tangent
 								float t = 1.0f / (du1.x * du2.y - du1.y * du2.x);
 								Vec4 tangent = (dv1 * du2.y - dv2 * du1.y) * t;
 
 								// Apply the tangent to each point on the triangle
-								triangles[i]->p0.tangent = tangent;
-								triangles[i]->p1.tangent = tangent;
-								triangles[i]->p2.tangent = tangent;
+								for (unsigned j = 0; j < 3; ++j)
+									triangles[i]->points[j].tangent = tangent;
 							}
 						} else if (std::regex_match(s, vn)) {
 							if (face_stream >> f >> vi1 >> ni1 >> vi2 >> ni2 >> vi3 >> ni3) {
-								triangles.push_back(Triangle_sptr(
-									new Triangle {
-										Vertex {
-											positions[vi1 - 1],
-											normals[ni1 - 1],
-											Vec4(),
-											Vec4(),
-											Vec2()
-										},
-										Vertex {
-											positions[vi2 - 1],
-											normals[ni2 - 1],
-											Vec4(),
-											Vec4(),
-											Vec2()
-										},
-										Vertex {
-											positions[vi3 - 1],
-											normals[ni3 - 1],
-											Vec4(),
-											Vec4(),
-											Vec2()
-										}
-									})
-								);
+								tri[0].position = positions[vi1 - 1];
+								tri[1].position = positions[vi2 - 1];
+								tri[2].position = positions[vi3 - 1];
+								tri[0].normal = normals[ni1 - 1];
+								tri[1].normal = normals[ni2 - 1];
+								tri[2].normal = normals[ni3 - 1];
+
+								for (unsigned i = 0; i < 3; ++i) {
+									tri[i].tangent = Vec4();
+									tri[i].color = Vec4();
+									tri[i].uv = Vec2();
+
+									triangle.points[i] = tri[i];
+								}
+
+								triangles.push_back(Triangle_sptr(&triangle));
 							}
 						}
 					}
