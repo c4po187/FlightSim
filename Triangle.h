@@ -29,7 +29,7 @@ namespace EUMD_FlightSimulator {
 
 			typedef struct tagTRIANGLE {
 				Vertex points[3];
-				const Vertex& operator [] (const int& i) { return points[i]; }
+				Vertex& operator [] (const int& i) { return points[i]; }
 			} Triangle, *PTriangle;
 
 			/* Shared Pointer definitions */

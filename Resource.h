@@ -74,7 +74,7 @@ namespace EUMD_FlightSimulator {
 
 					// Now check if the component exists in the vector
 					for (auto c : mv_pComponents) {
-						if (tname == c->getType()) {
+						if (tname == c->getType()) {	// Where is tname?
 							component = c;
 							break;
 						}
@@ -115,9 +115,12 @@ namespace EUMD_FlightSimulator {
 				PResources mv_pChildResources;
 				PComponents mv_pComponents;
 
+			private:
+
 				/* Functions */
 
 				bool checkValidity(const char* type_id);
+				std::string getClassNameFromTypeID(const char* type_id);
 		};
 	}
 }

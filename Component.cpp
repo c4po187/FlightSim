@@ -45,6 +45,28 @@ void Component::clean() {
 		mv_pChildComponents.clear();
 }
 
+bool Component::checkValidity(const char* type_id) {
+	bool validity = false;
+	std::string tname = getClassNameFromTypeID(type_id);
+
+	for (unsigned i = 0; i < SZ_SUBCOMPONENTS; ++i) {
+		if (Config::SubComponents[i] == tname) {
+			validity = true;
+			break;
+		}
+	}
+
+	return validity;
+}
+
+std::string Component::getClassNameFromTypeID(const char* type_id) {
+	std::string tname_ex(type_id);
+	size_t dc_pos = tname_ex.find_last_of(':');
+	std::string tname = tname_ex.substr(dc_pos + 1);
+
+	return tname;
+}
+
 #pragma endregion
 
 // END OF FILE

@@ -30,14 +30,16 @@ namespace EUMD_FlightSimulator {
 
 	namespace Utilities {
 		
+		#define V_COL Vec4(.7f, .7f, .7f, 1.0f)
+
 		class OBJLoader {
 
 			public:
 
 				/* Functions */
 
-				inline static bool loadOBJtoMesh(const std::string& filename,
-												 PTriangles& triangles) {
+				inline static bool loadOBJtoMesh(
+					const std::string& filename, PTriangles& triangles, bool calcNorms = false) {
 					std::ifstream file(filename);
 					if (!file) return false;
 
@@ -125,14 +127,16 @@ namespace EUMD_FlightSimulator {
 								tri[2].position = positions[vi3 - 1];
 
 								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].normal = Vec4();
 									tri[i].tangent = Vec4();
-									tri[i].color = Vec4();
+									tri[i].color = V_COL;
 									tri[i].uv = Vec2();
 
-									triangle.points[i] = tri[i];
+									triangle[i] = tri[i];
 								}
 								
+								if (calcNorms)
+									calculateFaceNormal(triangle);
+
 								triangles.push_back(Triangle_sptr(&triangle));
 							}
 						} else if (std::regex_match(s, vt)) {
@@ -145,13 +149,15 @@ namespace EUMD_FlightSimulator {
 								tri[2].uv = uvs[ti3 - 1];
 
 								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].normal = Vec4();
-									tri[i].tangent = Vec4();
-									tri[i].color = Vec4();
+									tri[i].color = V_COL;
 
-									triangle.points[i] = tri[i];
+									triangle[i] = tri[i];
 								}
 
+								if (calcNorms)
+									calculateFaceNormal(triangle);
+
+								calculateTangent(triangle);
 								triangles.push_back(Triangle_sptr(&triangle));
 							}
 						} else if (std::regex_match(s, vtn)) {
@@ -168,31 +174,13 @@ namespace EUMD_FlightSimulator {
 								tri[2].uv = uvs[ti3 - 1];
 
 								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].tangent = Vec4();
-									tri[i].color = Vec4();
+									tri[i].color = V_COL;
 
-									triangle.points[i] = tri[i];
+									triangle[i] = tri[i];
 								}
 
+								calculateTangent(triangle);
 								triangles.push_back(Triangle_sptr(&triangle));
-
-
-								// Get current index
-								unsigned int i = (triangles.size() - 1);
-								
-								// Calculate position and UV deltas
-								Vec4 dv1 = triangles[i]->points[1].position - triangles[i]->points[0].position;
-								Vec4 dv2 = triangles[i]->points[2].position - triangles[i]->points[0].position;
-								Vec2 du1 = triangles[i]->points[1].uv - triangles[i]->points[0].uv;
-								Vec2 du2 = triangles[i]->points[2].uv - triangles[i]->points[0].uv;
-
-								// Calculate the tangent
-								float t = 1.0f / (du1.x * du2.y - du1.y * du2.x);
-								Vec4 tangent = (dv1 * du2.y - dv2 * du1.y) * t;
-
-								// Apply the tangent to each point on the triangle
-								for (unsigned j = 0; j < 3; ++j)
-									triangles[i]->points[j].tangent = tangent;
 							}
 						} else if (std::regex_match(s, vn)) {
 							if (face_stream >> f >> vi1 >> ni1 >> vi2 >> ni2 >> vi3 >> ni3) {
@@ -205,10 +193,10 @@ namespace EUMD_FlightSimulator {
 
 								for (unsigned i = 0; i < 3; ++i) {
 									tri[i].tangent = Vec4();
-									tri[i].color = Vec4();
+									tri[i].color = V_COL;
 									tri[i].uv = Vec2();
 
-									triangle.points[i] = tri[i];
+									triangle[i] = tri[i];
 								}
 
 								triangles.push_back(Triangle_sptr(&triangle));
@@ -217,6 +205,40 @@ namespace EUMD_FlightSimulator {
 					}
 
 					return true;
+				}
+
+				inline static void calculateTangent(Triangle& triangle) {
+					// Calculate position & uv deltas
+					Vec4 dv1 = triangle[1].position - triangle[0].position;
+					Vec4 dv2 = triangle[2].position - triangle[0].position;
+					Vec2 du1 = triangle[1].uv - triangle[0].uv;
+					Vec2 du2 = triangle[2].uv - triangle[0].uv;
+
+					// Calulate the tangent
+					float t = 1.0f / (du1.x * du2.y - du1.y * du2.x);
+					Vec4 tangent = (dv1 * du2.y - dv2 * du1.y) * t;
+
+					// Apply the tangent to each of the triangle's points
+					for (unsigned i = 0; i < 3; ++i)
+						triangle[i].tangent = tangent;
+				}
+
+				// Use face normals for a flat shaded mesh
+				inline static void calculateFaceNormal(Triangle& triangle) {
+					// Get two edges of the triangle
+					Vec4 U = triangle[1].position - triangle[0].position;
+					Vec4 V = triangle[2].position - triangle[0].position;
+
+					// Convert the edges to Vector 3
+					Vec3 u3 = Vec3(U.x, U.y, U.z);
+					Vec3 v3 = Vec3(V.x, V.y, V.z);
+
+					// Calculate the normal (cross product of the two edges)
+					Vec3 N = glm::cross(u3, v3);
+
+					// Apply the normal to each of the triangle's points
+					for (unsigned i = 0; i < 3; ++i)
+						triangle[i].normal = Vec4(N, 1.0f);
 				}
 		};
 	}

@@ -32,7 +32,7 @@ namespace EUMD_FlightSimulator {
 		 */
 
 		#define SZ_SUBRESOURCES 2
-		#define SZ_SUBCOMPONENTS 5
+		#define SZ_SUBCOMPONENTS 6
 
 		#pragma endregion
 		
@@ -48,7 +48,8 @@ namespace EUMD_FlightSimulator {
 			"Shader",
 			"ShaderProgram",
 			"Transform",
-			"ModelTransform"
+			"ModelTransform",
+			"Mesh"
 		};
 	}
 }

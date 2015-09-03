@@ -50,6 +50,14 @@ bool Resource::checkValidity(const char* type_id) {
 	return validity;
 }
 
+std::string Resource::getClassNameFromTypeID(const char* type_id) {
+	std::string tname_ex(type_id);
+	size_t pos = tname_ex.find_last_of(':');
+	std::string tname = tname_ex.substr(pos + 1);
+
+	return tname;
+}
+
 void Resource::addResource(Resource_sptr presource) {
 	mv_pChildResources.push_back(presource);
 }
