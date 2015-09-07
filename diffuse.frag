@@ -29,7 +29,7 @@ void main() {
 	vec4 lighting = light.color * light.intensity * coefficient / light_distance;
 	vec4 illumination = ambient * lighting;
 
-	gl_FragColor = illumination * rgba; 
+	gl_FragColor = illumination * rgba;
 }
 
 // END OF FILE

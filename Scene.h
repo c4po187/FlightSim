@@ -17,9 +17,17 @@
 #include "Pair.h"
 #include "Camera.h"
 #include "ShaderProgram.h"
+#include "Mesh.h"
+#include "Light.h"
 
 using namespace EUMD_FlightSimulator::Components;
 using namespace EUMD_FlightSimulator::Core::Graphics;
+
+#pragma endregion
+
+#pragma region Constants
+
+#define GRID_COLOR Vec3(.0f, .85f, .25f)
 
 #pragma endregion
 
@@ -28,8 +36,6 @@ using namespace EUMD_FlightSimulator::Core::Graphics;
 namespace EUMD_FlightSimulator {
 
 	namespace Resources {
-
-		#define GRID_COLOR Vec3(.0f, .85f, .25f)
 
 		class Scene;
 
@@ -76,6 +82,15 @@ namespace EUMD_FlightSimulator {
 				/* Functions */
 
 				void initializeGrid();
+
+				/* Tests */
+
+				BasicLight m_light;
+				Mesh_sptr mp_testMesh;
+				Mesh_sptr mp_mesh;
+
+				void initTests();
+				void initTests2();
 		};
 	}
 }

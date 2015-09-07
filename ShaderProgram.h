@@ -59,6 +59,7 @@ namespace EUMD_FlightSimulator {
 				bool detachShaders();
 				bool link();
 				bool activate();
+				void deactivate();
 				void cacheProgram(const std::string& filename, GLenum& binFormat);
 				static ShaderProgram_sptr restoreCache(const std::string& filename, const GLenum& binFormat);
 				int getUniformLocation(const std::string& uniform);

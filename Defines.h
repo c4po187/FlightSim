@@ -12,10 +12,7 @@
 
 #pragma region Prerequisites
 
-///// Test /////
 #include <GL\glew.h>
-////////////////
-
 #include <glm\glm.hpp>
 #include <glm\gtc\quaternion.hpp>
 #include <glm\gtc\matrix_transform.hpp>

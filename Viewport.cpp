@@ -68,9 +68,6 @@ void Viewport::render() {
 
 		glViewport(m_x, m_y, m_width, m_height);
 
-		if (mp_viewCam)
-			glLoadMatrixf(glm::value_ptr(mp_viewCam->getViewMatrix()));
-
 		if (mp_scene)
 			mp_scene->render();
 

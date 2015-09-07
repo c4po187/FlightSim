@@ -157,6 +157,10 @@ bool ShaderProgram::activate() {
 	return false;
 }
 
+void ShaderProgram::deactivate() {
+	glUseProgram(0);
+}
+
 void ShaderProgram::details() {
 	if (!getTag().empty())
 		std::cout << getTag() << ", ";

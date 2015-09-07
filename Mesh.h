@@ -16,6 +16,7 @@
 #include "OBJLoader.h"
 #include "ShaderProgram.h"
 #include "Transform.h"
+#include "Camera.h"
 
 using namespace EUMD_FlightSimulator::Utilities;
 using namespace EUMD_FlightSimulator::Core::Graphics;
@@ -45,12 +46,13 @@ namespace EUMD_FlightSimulator {
 
 				/* Accessors */
 
-				inline const PTriangles& getTriangles() const { return mv_pTriangles; }
+				inline const Vertices& getVertices() const { return mv_vertices; }
 				inline const bool& hasOBJ() const { return mb_hasOBJ; }
+				inline const bool& hasShader() const { return mb_hasShader; }
 
 				/* Modifiers */
 
-				inline void setTriangles(const PTriangles& triangles) { mv_pTriangles = triangles; }
+				inline void setVertices(const Vertices& vertices) { mv_vertices = vertices; }
 
 				/* Implementations */
 
@@ -63,18 +65,20 @@ namespace EUMD_FlightSimulator {
 				bool loadOBJtoMesh(const std::string& obj_filename, bool calculateNormals);
 				void attachShaderProgram(ShaderProgram_sptr pshaderProgram);
 				void attachTransform(Transform_sptr ptransform);
-				void addTriangle(Triangle_sptr ptriangle);
-				bool removeTriangleAt(const int& index);
+				void addVertex(const Vertex& vertex);
+				bool removeVertexAt(const int& index);
+				bool clearVertices();
 				void finalize();
-				void render();
+				void render(Camera_sptr pcamera);
 
 			private:
 
 				/* Members */
 
-				PTriangles mv_pTriangles;
 				bool mb_hasOBJ, mb_hasShader;
 				unsigned int m_vao, m_vbo;
+				Vertices mv_vertices;
+				float rotz;
 		};
 	}
 }

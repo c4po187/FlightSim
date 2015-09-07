@@ -27,27 +27,26 @@ using namespace EUMD_FlightSimulator::Components;
 
 #pragma endregion
 
+#pragma region Constants
+
+#define VP_BGN 0x01
+#define VP_SINGLE VP_BGN
+#define VP_SPLITSCREEN_2H VP_BGN << 1
+#define VP_SPLITSCREEN_2V VP_BGN << 2
+#define VP_SPLITSCREEN_3H VP_BGN << 3
+#define VP_SPLITSCREEN_3V VP_BGN << 4
+#define VP_SPLITSCREEN_4 VP_BGN << 5
+#define VP_CUSTOM_LAYOUT VP_BGN << 6
+#define VP_FITCANVAS VP_BGN << 7
+#define VP_BORDER VP_BGN << 8
+
+#pragma endregion
+
 #pragma region Declarations
 
 namespace EUMD_FlightSimulator {
 
 	namespace Core {
-
-		#define VP_BGN 0x01
-
-		/* Viewport Arrangement Presets */
-
-		enum {
-			VP_SINGLE = VP_BGN,
-			VP_SPLITSCREEN_2H = VP_BGN << 1,
-			VP_SPLITSCREEN_2V = VP_BGN << 2,
-			VP_SPLITSCREEN_3H = VP_BGN << 3,
-			VP_SPLITSCREEN_3V = VP_BGN << 4,
-			VP_SPLITSCREEN_4 = VP_BGN << 5,
-			VP_CUSTOM_LAYOUT = VP_BGN << 6,
-			VP_FITCANVAS = VP_BGN << 7,
-			VP_BORDER = VP_BGN << 8
-		};
 
 		using namespace Graphics;
 

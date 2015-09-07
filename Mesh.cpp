@@ -19,7 +19,8 @@ using namespace EUMD_FlightSimulator::Components;
 
 Mesh::Mesh(const std::string& obj_filename, const std::string& tag, bool calculateNormals) : mb_hasShader(false) {
 	m_tag = tag;
-	mb_hasOBJ = OBJLoader::loadOBJtoMesh(obj_filename, mv_pTriangles, calculateNormals);
+	mb_hasOBJ = OBJLoader::loadOBJtoMesh(obj_filename, mv_vertices, calculateNormals);
+	addComponent(ModelTransform_sptr(new ModelTransform(Vec3(.0f), "Default_Transform")));
 }
 
 Mesh::Mesh(const std::string& tag) : mb_hasOBJ(false), mb_hasShader(false) { m_tag = tag; }
@@ -32,8 +33,32 @@ Mesh::~Mesh() {
 
 /* Functions */
 
+void Mesh::addVertex(const Vertex& vertex) {
+	mv_vertices.push_back(vertex);
+}
+
+bool Mesh::removeVertexAt(const int& index) {
+	if (index < 0 || index >= mv_vertices.size() || mv_vertices.empty())
+		return false;
+
+	size_t pre = mv_vertices.size();
+	mv_vertices.erase(mv_vertices.begin() + index);
+
+	return (pre < mv_vertices.size());
+}
+
+bool Mesh::clearVertices() {
+	if (!mv_vertices.empty())
+		mv_vertices.clear();
+
+	return mv_vertices.empty();
+}
+
 bool Mesh::loadOBJtoMesh(const std::string& obj_filename, bool calculateNormals) {
-	mb_hasOBJ = OBJLoader::loadOBJtoMesh(obj_filename, mv_pTriangles, calculateNormals);
+	// Clear the vertices first if full
+	clearVertices();
+
+	mb_hasOBJ = OBJLoader::loadOBJtoMesh(obj_filename, mv_vertices, calculateNormals);
 	
 	return mb_hasOBJ;
 }
@@ -52,28 +77,13 @@ void Mesh::attachTransform(Transform_sptr ptransform) {
 	addComponent(ptransform);
 }
 
-void Mesh::addTriangle(Triangle_sptr ptriangle) {
-	if (ptriangle)
-		mv_pTriangles.push_back(ptriangle);
-}
-
-bool Mesh::removeTriangleAt(const int& index) {
-	if (index < 0 || index >= mv_pTriangles.size() || mv_pTriangles.empty())
-		return false;
-	
-	size_t pre = mv_pTriangles.size();
-	mv_pTriangles.erase(mv_pTriangles.begin() + index);
-
-	return (mv_pTriangles.size() < pre);
-}
-
 /**
  * This function must be called before you can render!
  * Prior to calling this function you should have 
  * attached a shader program, linked & activated it.
  */
 void Mesh::finalize() {
-	if (!mv_pTriangles.empty()) {
+	if (!mv_vertices.empty()) {
 		// Generate & bind vertex array object
 		glGenVertexArrays(1, &m_vao);
 		glBindVertexArray(m_vao);
@@ -81,8 +91,7 @@ void Mesh::finalize() {
 		// Generate, bind & load the mesh data to the vertex buffer object
 		glGenBuffers(1, &m_vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		glBufferData(GL_ARRAY_BUFFER, 3 * mv_pTriangles.size() * sizeof(Vertex), 
-			&(mv_pTriangles[0]->points[0]), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, mv_vertices.size() * sizeof(Vertex), &mv_vertices[0], GL_STATIC_DRAW);
 
 		/* Set up all references to the vertex attributes */
 		
@@ -113,38 +122,49 @@ void Mesh::finalize() {
 
 		// Unbind
 		glBindVertexArray(0);
+
+		rotz = .0f;
 	}
 }
 
-void Mesh::render() {
+void Mesh::render(Camera_sptr pcamera) {
 	if (mb_hasShader) {
+		rotz += .005f;
+
 		getComponent<ShaderProgram>()->activate();
+
+		Matrix4 model = Matrix4(1.0f);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(glm::value_ptr(getComponent<ModelTransform>()->getModelMatrix()));
 
-		/**
-		 * @TODO: 
-		 *		MVP - Figure out how we will include the camera into this class.
-		 *		Send uniforms (such as MVP) to shader.
-		 */
-		Matrix4 mvp;
+		Matrix4 modelview = pcamera->getViewMatrix() * getComponent<ModelTransform>()->getModelMatrix();
+		Matrix4 mvp = 
+			pcamera->getProjectionMatrix() * 
+			pcamera->getViewMatrix() * getComponent<ModelTransform>()->getModelMatrix();
+
+		ShaderProgram_sptr pshp = getComponent<ShaderProgram>();
+		pshp->sendUniform(
+			pshp->getUniformLocation("model_matrix"), 1, false, getComponent<ModelTransform>()->getModelMatrix());
+		pshp->sendUniform(pshp->getUniformLocation("view_matrix"), 1, false, pcamera->getViewMatrix());
+		pshp->sendUniform(pshp->getUniformLocation("projection_matrix"), 1, false, pcamera->getProjectionMatrix());
+		pshp->sendUniform(pshp->getUniformLocation("modelview_matrix"), 1, false, modelview);
+		pshp->sendUniform(pshp->getUniformLocation("mvp_matrix"), 1, false, mvp);
 
 		// Perform the render
 		glBindVertexArray(m_vao);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		glDrawArrays(GL_TRIANGLES, 0, 3 * mv_pTriangles.size());
+		glDrawArrays(GL_TRIANGLES, 0, mv_vertices.size());
 		glBindVertexArray(0);
+
+		getComponent<ShaderProgram>()->deactivate();
 	}
 }
 
 void Mesh::clean() {
-	if (!mv_pTriangles.empty()) {
-		for (auto t : mv_pTriangles)
-			t = nullptr;
-		mv_pTriangles.clear();
-	}
-
+	clearVertices();
+	glDeleteBuffers(1, &m_vbo);
+	glDeleteVertexArrays(1, &m_vao);
 	Component::clean();
 }
 

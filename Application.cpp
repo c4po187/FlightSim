@@ -50,7 +50,7 @@ Application_sptr Application::createApplication(const HINSTANCE& hInstance, cons
 
 		if (sp_app->mb_registered = sp_app->registerWindowClass(hInstance)) {
 			sp_app->mp_canvas = Canvas_sptr(
-				new Canvas(hInstance, w, h, (VP_SINGLE | VP_FITCANVAS), NULL, true));
+				new Canvas(hInstance, w, h, (VP_SPLITSCREEN_4 | VP_FITCANVAS | VP_BORDER), NULL, true));
 		}
 	}
 

@@ -39,206 +39,140 @@ namespace EUMD_FlightSimulator {
 				/* Functions */
 
 				inline static bool loadOBJtoMesh(
-					const std::string& filename, PTriangles& triangles, bool calcNorms = false) {
+					const std::string& filename, Vertices& vertices, bool calcNorms = false) {
+					// Get the file
 					std::ifstream file(filename);
 					if (!file) return false;
 
+					// Vector to hold the face strings
 					std::vector<std::string> face_str;
 
+					//  Vectors for the Vertex attributes
 					std::vector<Vec4> positions;
 					std::vector<Vec4> normals;
 					std::vector<Vec4> tangents;
 					std::vector<Vec4> colors;
 					std::vector<Vec2> uvs;
 
-					// For each line in file...
+					// Read each line in the file & act accordingly
 					for (std::string line; std::getline(file, line);) {
-						// Create an input stream for the line
 						std::istringstream line_stream(line);
 
-						// String to hold the prefix
+						// Dump the prefix
 						std::string prefix;
-						// Get the prefix...
 						line_stream >> prefix;
-
-						/** 
-						 * Now we check through all the different 
-						 * prefixes and act accordingly.
-						 */
 
 						float x, y, z, w;
 
+						// Check the prefix and fill the attribute vectors 
 						if (prefix == "v") {
-							if (line_stream >> x >> y >> z >> w)
-								positions.push_back(Vec4(x, y, z, w));
-							else {
-								line_stream >> x >> y >> z;
+							if (line_stream >> x >> y >> z)
 								positions.push_back(Vec4(x, y, z, 1.0f));
-							}
 						} else if (prefix == "vn") {
-							if (line_stream >> x >> y >> z >> w)
-								normals.push_back(Vec4(x, y, z, w));
-							else {
-								line_stream >> x >> y >> z;
-								normals.push_back(Vec4(x, y, z, 1.0f));
-							}
+							if (line_stream >> x >> y >> z)
+								normals.push_back(Vec4(x, y, z, .0f));
 						} else if (prefix == "vt") {
-							line_stream >> x >> y;
-							uvs.push_back(Vec2(x, y));
+							if (line_stream >> x >> y)
+								uvs.push_back(Vec2(x, y));
+						} else if (prefix == "f") {
+							face_str.push_back(line_stream.str());
 						}
-						else if (prefix == "f") {
-							// Push the face line to a vector
-							face_str.push_back(line_stream.str()); 
-						}
-
-						// Get smoothing info etc..?
 					}
 
-					// Construct regular expressions to check against
+					// Construct regular expressions to check the face strings against
 					std::regex v("^f\\s(\\d+\\s?){3}");				// f v ..x3
 					std::regex vt("^f\\s(\\d+/\\d+\\s?){3}");		// f v/vt ..x3
 					std::regex vtn("^f\\s((\\d+/){2}\\d+\\s?){3}"); // f v/vt/vn ..x3
 					std::regex vn("^f\\s(\\d+/{2}\\d+\\s?){3}");	// f v//vn ..x3
 
-					// Now go through the vector of face strings and construct the faces
+					// Create the vertices from the face strings & stored attributes
 					for (auto s : face_str) {
-						// Indices for the vertices, normals and UV's
-						int vi1, vi2, vi3,
-							ni1, ni2, ni3,
-							ti1, ti2, ti3;
+						int v1, v2, v3, n1, n2, n3, u1, u2, u3;
 
-						// Get a copy of the string and replace the '/' with spaces
-						std::string _s = s;
+						// Replace all '/' characters with spaces
+						std::string _s = s, f;
 						std::replace_if(_s.begin(), _s.end(),
 							[](const char& c)-> bool { return c == '/'; }, ' ');
 
-						// Get our modified string as a stream
 						std::istringstream face_stream(_s);
-						std::string f;
 
-						Vertex tri[3];
-						Triangle triangle;
+						Vertex p1, p2, p3;
 
-						// Check against all the regular expresssions
+						// Match up the regular expressions
 						if (std::regex_match(s, v)) {
-							if (face_stream >> f >> vi1 >> vi2 >> vi3) {
-								tri[0].position = positions[vi1 - 1];
-								tri[1].position = positions[vi2 - 1];
-								tri[2].position = positions[vi3 - 1];
-
-								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].tangent = Vec4();
-									tri[i].color = V_COL;
-									tri[i].uv = Vec2();
-
-									triangle[i] = tri[i];
-								}
-								
-								if (calcNorms)
-									calculateFaceNormal(triangle);
-
-								triangles.push_back(Triangle_sptr(&triangle));
-							}
-						} else if (std::regex_match(s, vt)) {
-							if (face_stream >> f >> vi1 >> ti1 >> vi2 >> ti2 >> vi3 >> ti3) {
-								tri[0].position = positions[vi1 - 1];
-								tri[1].position = positions[vi2 - 1];
-								tri[2].position = positions[vi3 - 1];
-								tri[0].uv = uvs[ti1 - 1];
-								tri[1].uv = uvs[ti2 - 1];
-								tri[2].uv = uvs[ti3 - 1];
-
-								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].color = V_COL;
-
-									triangle[i] = tri[i];
-								}
-
-								if (calcNorms)
-									calculateFaceNormal(triangle);
-
-								calculateTangent(triangle);
-								triangles.push_back(Triangle_sptr(&triangle));
-							}
-						} else if (std::regex_match(s, vtn)) {
-							if (face_stream >> f >> vi1 >> ti1 >> ni1 >>
-								vi2 >> ti2 >> ni2 >> vi3 >> ti3 >> ni3) {
-								tri[0].position = positions[vi1 - 1];
-								tri[1].position = positions[vi2 - 1];
-								tri[2].position = positions[vi3 - 1];
-								tri[0].normal = normals[ni1 - 1];
-								tri[1].normal = normals[ni2 - 1];
-								tri[2].normal = normals[ni3 - 1];
-								tri[0].uv = uvs[ti1 - 1];
-								tri[1].uv = uvs[ti2 - 1];
-								tri[2].uv = uvs[ti3 - 1];
-
-								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].color = V_COL;
-
-									triangle[i] = tri[i];
-								}
-
-								calculateTangent(triangle);
-								triangles.push_back(Triangle_sptr(&triangle));
-							}
-						} else if (std::regex_match(s, vn)) {
-							if (face_stream >> f >> vi1 >> ni1 >> vi2 >> ni2 >> vi3 >> ni3) {
-								tri[0].position = positions[vi1 - 1];
-								tri[1].position = positions[vi2 - 1];
-								tri[2].position = positions[vi3 - 1];
-								tri[0].normal = normals[ni1 - 1];
-								tri[1].normal = normals[ni2 - 1];
-								tri[2].normal = normals[ni3 - 1];
-
-								for (unsigned i = 0; i < 3; ++i) {
-									tri[i].tangent = Vec4();
-									tri[i].color = V_COL;
-									tri[i].uv = Vec2();
-
-									triangle[i] = tri[i];
-								}
-
-								triangles.push_back(Triangle_sptr(&triangle));
+							if (face_stream >> f >> v1 >> v2 >> v3) {
+								p1.position = positions[v1 - 1];
+								p2.position = positions[v2 - 1];
+								p3.position = positions[v3 - 1];
 							}
 						}
+						else if (std::regex_match(s, vt)) {
+							if (face_stream >> f >> v1 >> u1 >> v2 >> u2 >> v3 >> u3) {
+								p1.position = positions[v1 - 1];
+								p2.position = positions[v2 - 1];
+								p3.position = positions[v3 - 1];
+
+								p1.uv = uvs[u1 - 1];
+								p2.uv = uvs[u2 - 1];
+								p3.uv = uvs[u3 - 1];
+							}
+						} else if (std::regex_match(s, vtn)) {
+							if (face_stream >> f >> v1 >> u1 >> n1 >> v2 >> u2 >> n2 >> v3 >> u3 >> n3) {
+								p1.position = positions[v1 - 1];
+								p2.position = positions[v2 - 1];
+								p3.position = positions[v3 - 1];
+
+								p1.uv = uvs[u1 - 1];
+								p2.uv = uvs[u2 - 1];
+								p3.uv = uvs[u3 - 1];
+
+								p1.normal = normals[n1 - 1];
+								p2.normal = normals[n2 - 1];
+								p3.normal = normals[n3 - 1];
+
+								calculateTangent(p1, p2, p3);
+							}
+						} else if (std::regex_match(s, vn)) {
+							if (face_stream >> f >> v1 >> n1 >> v2 >> n2 >> v3 >> n3) {
+								p1.position = positions[v1 - 1];
+								p2.position = positions[v2 - 1];
+								p3.position = positions[v3 - 1];
+
+								p1.normal = normals[n1 - 1];
+								p2.normal = normals[n2 - 1];
+								p3.normal = normals[n3 - 1];
+							}
+						}
+
+						// Singular colour for now
+						p1.color = V_COL;
+						p2.color = V_COL;
+						p3.color = V_COL;
+
+						// Push the Vertices onto the vector
+						vertices.push_back(p1);
+						vertices.push_back(p2);
+						vertices.push_back(p3);
 					}
 
 					return true;
 				}
 
-				inline static void calculateTangent(Triangle& triangle) {
-					// Calculate position & uv deltas
-					Vec4 dv1 = triangle[1].position - triangle[0].position;
-					Vec4 dv2 = triangle[2].position - triangle[0].position;
-					Vec2 du1 = triangle[1].uv - triangle[0].uv;
-					Vec2 du2 = triangle[2].uv - triangle[0].uv;
+				inline static void calculateTangent(Vertex& p1, Vertex& p2, Vertex& p3) {
+					// Calculate deltas
+					Vec4 dv1 = p2.position - p1.position;
+					Vec4 dv2 = p3.position - p1.position;
+					Vec2 du1 = p2.uv - p1.uv;
+					Vec2 du2 = p3.uv - p1.uv;
 
-					// Calulate the tangent
+					// Calculate the tangent
 					float t = 1.0f / (du1.x * du2.y - du1.y * du2.x);
 					Vec4 tangent = (dv1 * du2.y - dv2 * du1.y) * t;
 
-					// Apply the tangent to each of the triangle's points
-					for (unsigned i = 0; i < 3; ++i)
-						triangle[i].tangent = tangent;
-				}
-
-				// Use face normals for a flat shaded mesh
-				inline static void calculateFaceNormal(Triangle& triangle) {
-					// Get two edges of the triangle
-					Vec4 U = triangle[1].position - triangle[0].position;
-					Vec4 V = triangle[2].position - triangle[0].position;
-
-					// Convert the edges to Vector 3
-					Vec3 u3 = Vec3(U.x, U.y, U.z);
-					Vec3 v3 = Vec3(V.x, V.y, V.z);
-
-					// Calculate the normal (cross product of the two edges)
-					Vec3 N = glm::cross(u3, v3);
-
-					// Apply the normal to each of the triangle's points
-					for (unsigned i = 0; i < 3; ++i)
-						triangle[i].normal = Vec4(N, 1.0f);
+					// Apply the tangent to each of the vertices
+					p1.tangent = tangent;
+					p2.tangent = tangent;
+					p3.tangent = tangent;
 				}
 		};
 	}

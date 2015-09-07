@@ -46,6 +46,10 @@ namespace EUMD_FlightSimulator {
 
 			typedef std::tr1::shared_ptr<Vertex> Vertex_sptr;
 			typedef std::tr1::shared_ptr<NoobVertex> NoobVertex_sptr;
+			typedef std::vector<Vertex> Vertices;
+			typedef std::vector<Vertex_sptr> PVertices;
+			typedef std::vector<NoobVertex> NoobVertices;
+			typedef std::vector<NoobVertex_sptr> PNoobVertices;
 		}
 	}
 }
